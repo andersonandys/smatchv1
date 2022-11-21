@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smatch</string>
+    <string name="facebook_app_id">1067836140417192</string>
+    <string name="fb_login_protocol_scheme">fb1067836140417192</string>
+    <string name="facebook_client_token">c85378af256bcaaf4ddf817b50a9b306</string>
+</resources>
