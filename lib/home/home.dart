@@ -23,6 +23,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:smatch/callnew/home/home_page.dart';
 import 'package:smatch/club/homeclub.dart';
 import 'package:smatch/club/ui/home/Home.dart';
 import 'package:smatch/home/notification.dart';
@@ -109,15 +110,6 @@ class _homeState extends State<home> {
   final sendrequ = Get.put(Changevalue());
   List _abonnenoeud = [];
 
-  String mnemonic =
-      'brief hello carry loop squeeze unknown click abstract lounge figure logic oblige child ripple about vacant scheme magnet open enroll stuff valve hobby what';
-
-// Sample secret key
-  String secretKey =
-      'edskRpwW3bAgx7GsbyTrbb5NUP7b1tz34AvfV2Vm4En5LgEzeUmg3Ys815UDYNNFG6JvrrGqA9CNU2h8hsLVVLfuEQPkZNtkap';
-
-// Sample seed
-  String seed = 'edsk3RR5U7JsUJ8ctjsuymUPayxMm4LHXaB7VJSfeyMb8fAvbJUnsa';
   @override
   initState() {
     super.initState();
@@ -270,7 +262,7 @@ class _homeState extends State<home> {
         actions: [
           GestureDetector(
               onTap: () async {
-                Get.to(() => const Notificationhome());
+                Get.to(() => HomePage());
               },
               child: Row(
                 children: <Widget>[

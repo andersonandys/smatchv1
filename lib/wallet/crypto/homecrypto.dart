@@ -33,6 +33,11 @@ class _HomecryptoState extends State<Homecrypto> {
       ),
       body: Column(
         children: <Widget>[
+          const Text(
+            'tz1X7h3KJnPz1ZdUukQfhZkCMa2DhgTyaVDh',
+            style: TextStyle(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           SizedBox(
               height: 200,
               child: Stack(

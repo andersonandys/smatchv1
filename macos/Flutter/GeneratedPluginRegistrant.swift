@@ -22,11 +22,14 @@ import flutter_webrtc
 import just_audio
 import path_provider_macos
 import record_macos
+import share_plus_macos
 import shared_preferences_macos
 import smart_auth
 import sqflite
+import url_launcher_macos
 import video_compress
 import wakelock_macos
+import zego_express_engine
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioSessionPlugin.register(with: registry.registrar(forPlugin: "AudioSessionPlugin"))
@@ -46,9 +49,12 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   JustAudioPlugin.register(with: registry.registrar(forPlugin: "JustAudioPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   RecordMacosPlugin.register(with: registry.registrar(forPlugin: "RecordMacosPlugin"))
+  SharePlusMacosPlugin.register(with: registry.registrar(forPlugin: "SharePlusMacosPlugin"))
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
   SmartAuthPlugin.register(with: registry.registrar(forPlugin: "SmartAuthPlugin"))
   SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
+  UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
   VideoCompressPlugin.register(with: registry.registrar(forPlugin: "VideoCompressPlugin"))
   WakelockMacosPlugin.register(with: registry.registrar(forPlugin: "WakelockMacosPlugin"))
+  ZegoExpressEnginePlugin.register(with: registry.registrar(forPlugin: "ZegoExpressEnginePlugin"))
 }
