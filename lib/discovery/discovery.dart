@@ -1078,7 +1078,8 @@ class _HomeDicoveryState extends State<HomeDicovery> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.orange.shade900)),
-              child: const Text('Oui quitter'),
+              child: const Text('Oui quitter',
+                  style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
                 userabonne.doc(idcomptequitte).delete();

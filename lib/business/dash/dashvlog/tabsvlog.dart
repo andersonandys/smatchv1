@@ -44,7 +44,7 @@ class _TabsvlogState extends State<Tabsvlog> {
             icon: const Icon(IconlyLight.activity, size: 28),
             title: const Text(
               "Activité",
-              style: TextStyle(),
+              style: TextStyle(fontSize: 15),
             ),
             selectedColor: Colors.black.withBlue(25),
           ),
@@ -52,7 +52,7 @@ class _TabsvlogState extends State<Tabsvlog> {
           /// toutes les videos
           SalomonBottomBarItem(
             icon: const Icon(Icons.list_sharp, size: 28),
-            title: const Text("Publication", style: TextStyle()),
+            title: const Text("Publication", style: TextStyle(fontSize: 15)),
             selectedColor: Colors.black.withBlue(25),
           ),
 
@@ -61,7 +61,7 @@ class _TabsvlogState extends State<Tabsvlog> {
             icon: const Icon(IconlyLight.setting, size: 28),
             title: const Text(
               "Paramèttre",
-              style: TextStyle(),
+              style: TextStyle(fontSize: 15),
             ),
             selectedColor: Colors.black.withBlue(25),
           ),

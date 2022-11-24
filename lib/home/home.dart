@@ -144,10 +144,14 @@ class _homeState extends State<home> {
         .collection('abonne')
         .where("iduser", isEqualTo: user!.uid)
         .get()
-        .then((QuerySnapshot querySnapshot) {
+        .then((querySnapshot) {
       setState(() {
         _abonnenoeud = querySnapshot.docs;
       });
+      for (var vu in _abonnenoeud) {
+        print(vu);
+      }
+      print(_abonnenoeud.first);
     });
   }
 

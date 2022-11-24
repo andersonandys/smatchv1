@@ -244,6 +244,8 @@ class _MesboutiquesState extends State<Mesboutiques> {
                                           if (item['idcompte'] ==
                                               _noeud.data!.docs[index]
                                                   ['idcompte']) {
+                                            print(_noeud.data!.docs[index]
+                                                ["idcompte"]);
                                             Get.toNamed("/tabsmenushop",
                                                 arguments: [
                                                   {

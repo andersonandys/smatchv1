@@ -332,7 +332,10 @@ class _CommandeshopState extends State<Commandeshop> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.orange.shade900)),
-              child: const Text('Oui confirmer'),
+              child: const Text(
+                'Oui confirmer',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('commandeproduit')
@@ -378,7 +381,10 @@ class _CommandeshopState extends State<Commandeshop> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.orange.shade900)),
-              child: const Text('Oui confirmer'),
+              child: const Text(
+                'Oui confirmer',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection("commandeproduit")

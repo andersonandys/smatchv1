@@ -230,6 +230,8 @@ class _SpaceState extends State<Space> {
                                   ? Center(
                                       child: GestureDetector(
                                       onTap: () {
+                                        print(_noeud.data!.docs[index]
+                                            ["idcompte"]);
                                         Get.toNamed("/tabsvlog", arguments: [
                                           {
                                             "idchaine": _noeud.data!.docs[index]
@@ -296,7 +298,8 @@ class _SpaceState extends State<Space> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.orange.shade900)),
-              child: const Text('Oui quitter'),
+              child: const Text('Oui quitter',
+                  style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
                 userabonne.doc(idcompte).delete();

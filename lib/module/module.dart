@@ -95,7 +95,7 @@ class _MymoduleState extends State<Mymodule> {
         appBar: AppBar(
           backgroundColor: Colors.black.withBlue(30),
           title: Text(
-            'Space',
+            'Spaces',
             style: GoogleFonts.poppins(fontSize: 30),
           ),
           leading: IconButton(

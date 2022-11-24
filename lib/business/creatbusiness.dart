@@ -47,6 +47,7 @@ class _CreatbusiState extends State<Creatbusi> {
   String nomuser = "";
   String avataruser = "";
   int newprix = 0;
+  bool isload = false;
   void initState() {
     super.initState();
     EasyLoading.addStatusCallback((status) {
@@ -71,7 +72,6 @@ class _CreatbusiState extends State<Creatbusi> {
         nomuser = querySnapshot.docs.first['nom'];
         avataruser = querySnapshot.docs.first['avatar'];
       });
-      print('object');
     });
   }
 
@@ -295,351 +295,7 @@ class _CreatbusiState extends State<Creatbusi> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            return SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 30),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Container(
-                      height: 5,
-                      width: 50,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    const SizedBox(
-                        child: Text("Création de boutique",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white))),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            selectimage();
-                          },
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(50)),
-                                color: Colors.white.withOpacity(0.2)),
-                            child: (logo.isEmpty)
-                                ? const Center(
-                                    child: Icon(
-                                      Iconsax.camera,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(50)),
-                                    child: Image.network(
-                                      logo,
-                                      fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width,
-                                      height:
-                                          MediaQuery.of(context).size.height,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            style: const TextStyle(color: Colors.white),
-                            cursorHeight: 20,
-                            autofocus: false,
-                            controller: nomshop,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white.withOpacity(0.2),
-                              filled: true,
-                              label: const Text("Nom de votre boutique"),
-                              labelStyle: const TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: const BorderSide(
-                                    color: Colors.grey, width: 2),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      style: const TextStyle(color: Colors.white),
-                      maxLines: 2,
-                      cursorHeight: 20,
-                      autofocus: false,
-                      controller: descriptionshop,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white.withOpacity(0.2),
-                        filled: true,
-                        label: const Text("Description"),
-                        labelStyle: const TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              const BorderSide(color: Colors.grey, width: 2),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Apparence",
-                        style: TextStyle(color: Colors.white70, fontSize: 20),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 120,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  color: Colors.white.withOpacity(0.2),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const Icon(
-                                      Icons.public_rounded,
-                                      size: 40,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                      "Light",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              (design == "1")
-                                  ? const Positioned(
-                                      top: 1,
-                                      right: 1,
-                                      child: Icon(Icons.check,
-                                          color: Colors.green, size: 30),
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                          onTap: () {
-                            setState(() {
-                              design = "1";
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        GestureDetector(
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 120,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const Icon(
-                                      Iconsax.security_user,
-                                      size: 40,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                      "Ligth +",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              (design == "2")
-                                  ? const Positioned(
-                                      top: 1,
-                                      right: 1,
-                                      child: Icon(
-                                        Icons.check,
-                                        color: Colors.green,
-                                        size: 30,
-                                      ),
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                          onTap: () {
-                            setState(() {
-                              design = "2";
-                              print(design);
-                            });
-                          },
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(children: [
-                      const Icon(
-                        Icons.check_box,
-                        color: Colors.green,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                          child: Container(
-                        height: 50,
-                        child: const Text(
-                          "Vous acceptez les termes et les conditions liés à la création d'un compte business.",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ))
-                    ]),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (logo.isEmpty) {
-                            requ.message(
-                                "Echec", "Nous vous prions de choisir un logo");
-                          } else if (nomshop.text.isEmpty) {
-                            requ.message(
-                                "Echec", "Nous vous prions de saisir un nom");
-                          } else if (descriptionshop.text.isEmpty) {
-                            requ.message("Echec",
-                                "Nous vous prions de saisir une description");
-                          } else {
-                            _progress = 0;
-                            _timer?.cancel();
-                            _timer = Timer.periodic(
-                                const Duration(milliseconds: 100),
-                                (Timer timer) {
-                              EasyLoading.showProgress(_progress,
-                                  maskType: EasyLoadingMaskType.black,
-                                  status:
-                                      "${(_progress * 100).toStringAsFixed(0)}% \n Création de votre boutique \n patientez s'il vous plaît");
-                              _progress += 0.01;
-
-                              if (_progress >= 1) {
-                                _timer?.cancel();
-                                EasyLoading.dismiss();
-                                requ.message("Succes",
-                                    "Votre boutique a été créée avec succès.");
-                              }
-                            });
-                            DateTime now = DateTime.now();
-                            String dateformat =
-                                DateFormat("yyyy-MM-dd - kk:mm").format(now);
-                            FirebaseFirestore.instance.collection("noeud").add({
-                              "nom": nomshop.text,
-                              "description": descriptionshop.text,
-                              "idcreat": user!.uid,
-                              "logo": logo,
-                              "date": dateformat,
-                              "range": DateTime.now().millisecondsSinceEpoch,
-                              "wallet": 0,
-                              "nbrproduit": 0,
-                              "nbrcommande": 0,
-                              "nbretraite": 0,
-                              "newcommande": 0,
-                              "nbreannule": 0,
-                              "type": "boutique",
-                              "design": design,
-                              "offre": "gratuit",
-                              "mode": false,
-                              "ready": 0,
-                              "statut": "public",
-                              "prix": 0,
-                              "idcompte": "",
-                              "nbreuser": 1
-                            }).then((value) {
-                              FirebaseFirestore.instance
-                                  .collection("noeud")
-                                  .doc(value.id)
-                                  .update({"idcompte": value.id});
-                              FirebaseFirestore.instance
-                                  .collection("abonne")
-                                  .add({
-                                "iduser": user!.uid,
-                                "idcreat": user!.uid,
-                                "idcompte": value.id,
-                                "nom": nomshop.text,
-                                "logo": logo,
-                                "date": dateformat,
-                                "range": DateTime.now().millisecondsSinceEpoch,
-                                "offre": "gratuit",
-                                "statut": 1,
-                                "type": "boutique",
-                                "design": design,
-                                "nomuser": user!.displayName
-                              });
-                              Navigator.of(context).pop;
-                              Get.toNamed("/tabsmenushop", arguments: [
-                                {"idshop": value.id},
-                                {"nomshop": nomshop.text},
-                                {"design": design}
-                              ]);
-
-                              print(value.id);
-                              nomshop.clear();
-                              descriptionshop.clear();
-                              design = "0";
-                              logo = "";
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange.shade900,
-                            fixedSize:
-                                Size(MediaQuery.of(context).size.width, 70),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5))),
-                        child: Text(
-                          "Créer mon compte",
-                          style: GoogleFonts.poppins(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
+            return Creatbusishop();
           });
         });
   }
@@ -655,336 +311,7 @@ class _CreatbusiState extends State<Creatbusi> {
         ),
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: Container(
-                  margin:
-                      const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      Center(
-                        child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              color: Colors.grey),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Center(
-                        child: Text("Création de Space",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              selectimage();
-                            },
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(50)),
-                                  color: Colors.white.withOpacity(0.2)),
-                              child: (logo.isEmpty)
-                                  ? const Center(
-                                      child: Icon(
-                                        Iconsax.camera,
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(50)),
-                                      child: Image.network(
-                                        logo,
-                                        fit: BoxFit.cover,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              style: const TextStyle(color: Colors.white),
-                              cursorHeight: 20,
-                              autofocus: false,
-                              controller: nommoment,
-                              decoration: InputDecoration(
-                                labelStyle:
-                                    const TextStyle(color: Colors.white),
-                                label: const Text("Nom de votre Space"),
-                                fillColor: Colors.white.withOpacity(0.2),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: const BorderSide(
-                                      color: Colors.grey, width: 2),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                        maxLines: 2,
-                        cursorHeight: 20,
-                        autofocus: false,
-                        controller: descriptionmoment,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          label: const Text("Description"),
-                          fillColor: Colors.white.withOpacity(0.2),
-                          filled: true,
-                          labelStyle: const TextStyle(color: Colors.white),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide:
-                                const BorderSide(color: Colors.grey, width: 2),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Text("Offre",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 120,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10)),
-                                    color: Colors.white.withOpacity(0.2),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Icon(
-                                        Iconsax.money,
-                                        size: 40,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        "Libre",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 20, color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                (offre == "gratuit")
-                                    ? const Positioned(
-                                        top: 1,
-                                        right: 1,
-                                        child: Icon(Icons.check,
-                                            color: Colors.green, size: 30),
-                                      )
-                                    : Container()
-                              ],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                offre = "gratuit";
-                                print(offre);
-                              });
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 120,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10)),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Icon(
-                                        IconlyLight.wallet,
-                                        size: 40,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        "Abonnement",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 20, color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                (offre == "payant")
-                                    ? const Positioned(
-                                        top: 1,
-                                        right: 1,
-                                        child: Icon(
-                                          Icons.check,
-                                          color: Colors.green,
-                                          size: 30,
-                                        ),
-                                      )
-                                    : Container()
-                              ],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                offre = "payant";
-                              });
-                            },
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      (offre == "payant")
-                          ? Padding(
-                              padding: EdgeInsets.only(
-                                  top: 20,
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
-                              child: TextFormField(
-                                style: const TextStyle(color: Colors.white),
-                                cursorHeight: 20,
-                                autofocus: false,
-                                controller: prix,
-                                decoration: InputDecoration(
-                                  label: const Text("Prix",
-                                      style: TextStyle(color: Colors.white)),
-                                  fillColor: Colors.white.withOpacity(0.2),
-                                  filled: true,
-                                  labelStyle:
-                                      const TextStyle(color: Colors.white),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 2),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  newprix = int.parse(value);
-                                  print(newprix);
-                                },
-                              ),
-                            )
-                          : Container(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(children: const [
-                        Icon(
-                          Icons.check_box,
-                          color: Colors.green,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                            child: SizedBox(
-                          height: 50,
-                          child: Text(
-                            "Vous acceptez les termes et les conditions liés à la création d'un compte business.",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ))
-                      ]),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (logo.isEmpty) {
-                              requ.message("Echec",
-                                  "Nous vous prions de choisir un logo");
-                            } else if (nommoment.text.isEmpty) {
-                              requ.message(
-                                  "Echec", "Nous vous prions de saisir un nom");
-                            } else if (descriptionmoment.text.isEmpty) {
-                              requ.message("Echec",
-                                  "Nous vous prions de saisir une description");
-                            } else if (offre!.isEmpty) {
-                              requ.message("Echec",
-                                  "Nous vous prions de sélectionner une offre.");
-                            } else {
-                              if (offre == "payant") {
-                                if (prix.text.isEmpty) {
-                                  requ.message("Echec",
-                                      "Nous vous prions de saisir un prix");
-                                } else {
-                                  addchaine();
-                                }
-                              } else {
-                                addchaine();
-                              }
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.orange.shade900,
-                              fixedSize:
-                                  Size(MediaQuery.of(context).size.width, 70),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5))),
-                          child: Text(
-                            "Créer un compte",
-                            style: GoogleFonts.poppins(
-                                fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          return Creatspace();
         });
   }
 
@@ -992,6 +319,8 @@ class _CreatbusiState extends State<Creatbusi> {
   selectimage() async {
     setState(() {
       progress = 0;
+      isload = true;
+      logo = "";
     });
     final fila = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (fila != null) {
@@ -1028,6 +357,7 @@ class _CreatbusiState extends State<Creatbusi> {
         .getDownloadURL();
     setState(() {
       logo = downloadURL;
+      isload = false;
     });
     print(logo);
   }
@@ -1093,6 +423,495 @@ class _CreatbusiState extends State<Creatbusi> {
         "statut": 1,
         "type": "Moment",
         "isuser": 1,
+        "nomuser": user!.displayName,
+        "message": 0
+      });
+      Get.toNamed("/tabsvlog", arguments: [
+        {"idchaine": value.id},
+        {"nomchaine": nommoment.text},
+      ]);
+      nommoment.clear();
+      descriptionmoment.clear();
+      prix.clear();
+      logo = "";
+      pays.clear();
+      offre = null;
+    });
+  }
+}
+
+class Creatspace extends StatefulWidget {
+  const Creatspace({Key? key}) : super(key: key);
+
+  @override
+  _CreatspaceState createState() => _CreatspaceState();
+}
+
+class _CreatspaceState extends State<Creatspace> {
+  Timer? _timer;
+  late double _progress;
+  String logo = "";
+  double progress = 0.0;
+  final requ = Get.put(Tabsrequette());
+  File? imagefile;
+  CollectionReference compte = FirebaseFirestore.instance.collection("noeud");
+  final nommoment = TextEditingController();
+  final descriptionmoment = TextEditingController();
+  final pays = TextEditingController();
+  String? offre;
+  final prix = TextEditingController();
+  User? user = FirebaseAuth.instance.currentUser;
+  String nomuser = "";
+  String avataruser = "";
+  int newprix = 0;
+  bool isload = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getinfouser() {
+      print(FirebaseAuth.instance.currentUser!.uid);
+      FirebaseFirestore.instance
+          .collection('users')
+          .where("iduser", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        setState(() {
+          nomuser = querySnapshot.docs.first['nom'];
+          avataruser = querySnapshot.docs.first['avatar'];
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Center(
+              child: Container(
+                height: 5,
+                width: 50,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Center(
+              child: Text("Création de Space",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    selectimage();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.3),
+                    radius: 50,
+                    child: (logo.isEmpty && !isload)
+                        ? const Center(
+                            child: Icon(
+                              Iconsax.camera,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          )
+                        : (logo.isEmpty && isload)
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                                child: Image.network(
+                                  logo,
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                ),
+                              ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    cursorHeight: 20,
+                    autofocus: false,
+                    controller: nommoment,
+                    decoration: InputDecoration(
+                      labelStyle: const TextStyle(color: Colors.white),
+                      label: const Text("Nom de votre Space"),
+                      fillColor: Colors.white.withOpacity(0.2),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 2),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              maxLines: 2,
+              cursorHeight: 20,
+              autofocus: false,
+              controller: descriptionmoment,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                label: const Text("Description"),
+                fillColor: Colors.white.withOpacity(0.2),
+                filled: true,
+                labelStyle: const TextStyle(color: Colors.white),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            const Text("Offre",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          color: Colors.white.withOpacity(0.2),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              Iconsax.money,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Libre",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      (offre == "gratuit")
+                          ? const Positioned(
+                              top: 1,
+                              right: 1,
+                              child: Icon(Icons.check,
+                                  color: Colors.green, size: 30),
+                            )
+                          : Container()
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      offre = "gratuit";
+                      print(offre);
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              IconlyLight.wallet,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Abonnement",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      (offre == "payant")
+                          ? const Positioned(
+                              top: 1,
+                              right: 1,
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 30,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      offre = "payant";
+                    });
+                  },
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            (offre == "payant")
+                ? Padding(
+                    padding: EdgeInsets.only(
+                        top: 20,
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: TextFormField(
+                      style: const TextStyle(color: Colors.white),
+                      cursorHeight: 20,
+                      autofocus: false,
+                      controller: prix,
+                      decoration: InputDecoration(
+                        label: const Text("Prix",
+                            style: TextStyle(color: Colors.white)),
+                        fillColor: Colors.white.withOpacity(0.2),
+                        filled: true,
+                        labelStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide:
+                              const BorderSide(color: Colors.grey, width: 2),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        newprix = int.parse(value);
+                        print(newprix);
+                      },
+                    ),
+                  )
+                : Container(),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(children: const [
+              Icon(
+                Icons.check_box,
+                color: Colors.green,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: SizedBox(
+                height: 50,
+                child: Text(
+                  "Vous acceptez les termes et les conditions liés à la création d'un compte business.",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ))
+            ]),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  if (logo.isEmpty) {
+                    requ.message(
+                        "Echec", "Nous vous prions de choisir un logo");
+                  } else if (nommoment.text.isEmpty) {
+                    requ.message("Echec", "Nous vous prions de saisir un nom");
+                  } else if (descriptionmoment.text.isEmpty) {
+                    requ.message(
+                        "Echec", "Nous vous prions de saisir une description");
+                  } else if (offre!.isEmpty) {
+                    requ.message(
+                        "Echec", "Nous vous prions de sélectionner une offre.");
+                  } else {
+                    if (offre == "payant") {
+                      if (prix.text.isEmpty) {
+                        requ.message(
+                            "Echec", "Nous vous prions de saisir un prix");
+                      } else {
+                        addchaine();
+                      }
+                    } else {
+                      addchaine();
+                    }
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.orange.shade900,
+                    fixedSize: Size(MediaQuery.of(context).size.width, 70),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+                child: Text(
+                  "Créer un compte",
+                  style: GoogleFonts.poppins(
+                      fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // uplaod de fichier
+  selectimage() async {
+    setState(() {
+      progress = 0;
+      isload = true;
+      logo = "";
+    });
+    final fila = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (fila != null) {
+      try {
+        String fileName = fila.name;
+        imagefile = File(fila.path);
+
+        UploadTask task = FirebaseStorage.instance
+            .ref()
+            .child("business/$fileName")
+            .putFile(File(fila.path));
+
+        task.snapshotEvents.listen((event) {
+          setState(() {
+            progress = ((event.bytesTransferred.toDouble() /
+                        event.totalBytes.toDouble()) *
+                    100)
+                .roundToDouble();
+
+            print(progress);
+          });
+        });
+        task.whenComplete(() => upload(fileName));
+      } on FirebaseException catch (e) {
+        print("Quelque chose, c'est mal passé, nous vous prions de réessayer.");
+      }
+    }
+  }
+
+  Future<void> upload(fileName) async {
+    String downloadURL = await FirebaseStorage.instance
+        .ref()
+        .child('business/$fileName')
+        .getDownloadURL();
+    setState(() {
+      logo = downloadURL;
+      isload = false;
+    });
+    print(logo);
+  }
+
+  addchaine() {
+    _progress = 0;
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
+      EasyLoading.showProgress(_progress,
+          maskType: EasyLoadingMaskType.black,
+          status:
+              "${(_progress * 100).toStringAsFixed(0)}% \n Création de votre Space \n Patientez s'il vous plaît");
+      _progress += 0.01;
+
+      if (_progress >= 1) {
+        _timer?.cancel();
+        EasyLoading.dismiss();
+        Navigator.of(context).pop;
+        requ.message("Succes", "Votre chaîne a été créée avec succès.");
+      }
+    });
+    DateTime now = DateTime.now();
+    String dateformat = DateFormat("yyyy-MM-dd - kk:mm").format(now);
+    FirebaseFirestore.instance.collection("noeud").add({
+      "nom": nommoment.text,
+      "description": descriptionmoment.text,
+      "idcreat": user!.uid,
+      "logo": logo,
+      "date": dateformat,
+      "range": DateTime.now().millisecondsSinceEpoch,
+      "wallet": 0,
+      "nbrevideo": 0,
+      "nbreuser": 1,
+      "type": "Moment",
+      "offre": offre,
+      "mode": true,
+      "ready": 0,
+      "statut": "public",
+      "idcompte": "",
+      "prix": newprix,
+      "type_paiement": "",
+      "titre": "",
+      "descriptionvideo": "",
+      "vignette": "",
+      "lienvideo": "",
+      "playliste": "",
+      "idcategorie": "",
+      "idvideo": "",
+      "message": 0
+    }).then((value) {
+      FirebaseFirestore.instance
+          .collection("noeud")
+          .doc(value.id)
+          .update({"idcompte": value.id});
+      FirebaseFirestore.instance.collection("abonne").add({
+        "iduser": user!.uid,
+        "idcreat": user!.uid,
+        "idcompte": value.id,
+        "nom": nommoment.text,
+        "logo": logo,
+        "date": dateformat,
+        "range": DateTime.now().millisecondsSinceEpoch,
+        "offre": offre,
+        "statut": 1,
+        "type": "Moment",
+        "message": 0,
+        "isuser": 1,
         "nomuser": user!.displayName
       });
       Get.toNamed("/tabsvlog", arguments: [
@@ -1106,5 +925,440 @@ class _CreatbusiState extends State<Creatbusi> {
       pays.clear();
       offre = null;
     });
+  }
+}
+
+class Creatbusishop extends StatefulWidget {
+  const Creatbusishop({Key? key}) : super(key: key);
+
+  @override
+  _CreatbusishopState createState() => _CreatbusishopState();
+}
+
+class _CreatbusishopState extends State<Creatbusishop> {
+  Timer? _timer;
+  late double _progress;
+  String logo = "";
+  double progress = 0.0;
+  final requ = Get.put(Tabsrequette());
+  File? imagefile;
+  CollectionReference compte = FirebaseFirestore.instance.collection("noeud");
+  final nomshop = TextEditingController();
+  final descriptionshop = TextEditingController();
+  final pays = TextEditingController();
+  String? offre;
+  final prix = TextEditingController();
+  User? user = FirebaseAuth.instance.currentUser;
+  String nomuser = "";
+  String avataruser = "";
+  int newprix = 0;
+  bool isload = false;
+  String design = "0";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getinfouser() {
+      print(FirebaseAuth.instance.currentUser!.uid);
+      FirebaseFirestore.instance
+          .collection('users')
+          .where("iduser", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        setState(() {
+          nomuser = querySnapshot.docs.first['nom'];
+          avataruser = querySnapshot.docs.first['avatar'];
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 30),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              height: 5,
+              width: 50,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  color: Colors.grey),
+            ),
+            const SizedBox(height: 10),
+            const SizedBox(
+                child: Text("Création de boutique",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white))),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    selectimage();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.3),
+                    radius: 50,
+                    child: (logo.isEmpty && !isload)
+                        ? const Center(
+                            child: Icon(
+                              Iconsax.camera,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          )
+                        : (logo.isEmpty && isload)
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                                child: Image.network(
+                                  logo,
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                ),
+                              ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    cursorHeight: 20,
+                    autofocus: false,
+                    controller: nomshop,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white.withOpacity(0.2),
+                      filled: true,
+                      label: const Text("Nom de votre boutique"),
+                      labelStyle: const TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 2),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              style: const TextStyle(color: Colors.white),
+              maxLines: 2,
+              cursorHeight: 20,
+              autofocus: false,
+              controller: descriptionshop,
+              decoration: InputDecoration(
+                fillColor: Colors.white.withOpacity(0.2),
+                filled: true,
+                label: const Text("Description"),
+                labelStyle: const TextStyle(color: Colors.white),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Apparence",
+                style: TextStyle(color: Colors.white70, fontSize: 20),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          color: Colors.white.withOpacity(0.2),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              Icons.public_rounded,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Light",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      (design == "1")
+                          ? const Positioned(
+                              top: 1,
+                              right: 1,
+                              child: Icon(Icons.check,
+                                  color: Colors.green, size: 30),
+                            )
+                          : Container()
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      design = "1";
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              Iconsax.security_user,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Ligth +",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      (design == "2")
+                          ? const Positioned(
+                              top: 1,
+                              right: 1,
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 30,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      design = "2";
+                      print(design);
+                    });
+                  },
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(children: [
+              const Icon(
+                Icons.check_box,
+                color: Colors.green,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Container(
+                height: 50,
+                child: const Text(
+                  "Vous acceptez les termes et les conditions liés à la création d'un compte business.",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ))
+            ]),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  if (logo.isEmpty) {
+                    requ.message(
+                        "Echec", "Nous vous prions de choisir un logo");
+                  } else if (nomshop.text.isEmpty) {
+                    requ.message("Echec", "Nous vous prions de saisir un nom");
+                  } else if (descriptionshop.text.isEmpty) {
+                    requ.message(
+                        "Echec", "Nous vous prions de saisir une description");
+                  } else {
+                    _progress = 0;
+                    _timer?.cancel();
+                    _timer = Timer.periodic(const Duration(milliseconds: 100),
+                        (Timer timer) {
+                      EasyLoading.showProgress(_progress,
+                          maskType: EasyLoadingMaskType.black,
+                          status:
+                              "${(_progress * 100).toStringAsFixed(0)}% \n Création de votre boutique \n patientez s'il vous plaît");
+                      _progress += 0.01;
+
+                      if (_progress >= 1) {
+                        _timer?.cancel();
+                        EasyLoading.dismiss();
+                        requ.message("Succes",
+                            "Votre boutique a été créée avec succès.");
+                      }
+                    });
+                    DateTime now = DateTime.now();
+                    String dateformat =
+                        DateFormat("yyyy-MM-dd - kk:mm").format(now);
+                    FirebaseFirestore.instance.collection("noeud").add({
+                      "nom": nomshop.text,
+                      "description": descriptionshop.text,
+                      "idcreat": user!.uid,
+                      "logo": logo,
+                      "date": dateformat,
+                      "range": DateTime.now().millisecondsSinceEpoch,
+                      "wallet": 0,
+                      "nbrproduit": 0,
+                      "nbrcommande": 0,
+                      "nbretraite": 0,
+                      "newcommande": 0,
+                      "nbreannule": 0,
+                      "type": "boutique",
+                      "design": design,
+                      "offre": "gratuit",
+                      "mode": false,
+                      "ready": 0,
+                      "statut": "public",
+                      "prix": 0,
+                      "idcompte": "",
+                      "nbreuser": 1,
+                      "message": 0
+                    }).then((value) {
+                      FirebaseFirestore.instance
+                          .collection("noeud")
+                          .doc(value.id)
+                          .update({"idcompte": value.id});
+                      FirebaseFirestore.instance.collection("abonne").add({
+                        "iduser": user!.uid,
+                        "idcreat": user!.uid,
+                        "idcompte": value.id,
+                        "nom": nomshop.text,
+                        "logo": logo,
+                        "date": dateformat,
+                        "range": DateTime.now().millisecondsSinceEpoch,
+                        "offre": "gratuit",
+                        "statut": 1,
+                        "type": "boutique",
+                        "message": 0,
+                        "design": design,
+                        "nomuser": user!.displayName,
+                      });
+                      Navigator.of(context).pop;
+                      Get.toNamed("/tabsmenushop", arguments: [
+                        {"idshop": value.id},
+                        {"nomshop": nomshop.text},
+                        {"design": design}
+                      ]);
+
+                      print(value.id);
+                      nomshop.clear();
+                      descriptionshop.clear();
+                      design = "0";
+                      logo = "";
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange.shade900,
+                    fixedSize: Size(MediaQuery.of(context).size.width, 70),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+                child: Text(
+                  "Créer mon compte",
+                  style: GoogleFonts.poppins(
+                      fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // uplaod de fichier
+  selectimage() async {
+    setState(() {
+      progress = 0;
+      isload = true;
+      logo = "";
+    });
+    final fila = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (fila != null) {
+      try {
+        String fileName = fila.name;
+        imagefile = File(fila.path);
+
+        UploadTask task = FirebaseStorage.instance
+            .ref()
+            .child("business/$fileName")
+            .putFile(File(fila.path));
+
+        task.snapshotEvents.listen((event) {
+          setState(() {
+            progress = ((event.bytesTransferred.toDouble() /
+                        event.totalBytes.toDouble()) *
+                    100)
+                .roundToDouble();
+
+            print(progress);
+          });
+        });
+        task.whenComplete(() => upload(fileName));
+      } on FirebaseException catch (e) {
+        print("Quelque chose, c'est mal passé, nous vous prions de réessayer.");
+      }
+    }
+  }
+
+  Future<void> upload(fileName) async {
+    String downloadURL = await FirebaseStorage.instance
+        .ref()
+        .child('business/$fileName')
+        .getDownloadURL();
+    setState(() {
+      logo = downloadURL;
+      isload = false;
+    });
+    print(logo);
   }
 }

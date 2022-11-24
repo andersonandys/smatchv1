@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 // import 'package:better_player/better_player.dart';
+import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class _PublicationvlogState extends State<Publicationvlog> {
   late double _progress;
   final titrecontroller = TextEditingController();
   final descriptoncontroller = TextEditingController();
+  late VideoPlayerController videoPlayerController;
+  late CustomVideoPlayerController _customVideoPlayerController;
+
   String image1 = "";
   String video = "";
   File? imagefile;
@@ -193,47 +197,9 @@ class _PublicationvlogState extends State<Publicationvlog> {
                   const SizedBox(
                     height: 10,
                   ),
-                  GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _controller.value.isPlaying
-                              ? _controller.pause()
-                              : _controller.play();
-                        });
-                      },
-                      child: Stack(
-                        children: [
-                          AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: VideoPlayer(_controller)),
-                          if (!_controller.value.isPlaying)
-                            Positioned(
-                              bottom: 10,
-                              right: 10,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(50)),
-                                    color: Colors.white.withOpacity(0.6)),
-                                child: const Icon(
-                                  IconlyBold.play,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          Positioned(
-                              bottom: 0,
-                              width: MediaQuery.of(context).size.width,
-                              child: VideoProgressIndicator(
-                                _controller,
-                                allowScrubbing: false,
-                                colors: const VideoProgressColors(
-                                    backgroundColor: Colors.red,
-                                    bufferedColor: Colors.red,
-                                    playedColor: Colors.blueAccent),
-                              )),
-                        ],
-                      ))
+                  CustomVideoPlayer(
+                      customVideoPlayerController:
+                          _customVideoPlayerController),
                 ],
               ),
             const SizedBox(
@@ -432,7 +398,9 @@ class _PublicationvlogState extends State<Publicationvlog> {
           requ.message("Succes", "Série publiée avec succès");
           titrecontroller.clear();
           descriptoncontroller.clear();
-          _controller.dispose();
+
+          _customVideoPlayerController.dispose();
+
           setState(() {
             categorie = null;
             viewprogressbar = false;
@@ -524,15 +492,17 @@ class _PublicationvlogState extends State<Publicationvlog> {
     final fila = await ImagePicker().pickVideo(source: ImageSource.gallery);
     if (fila != null) {
       try {
-        _controller = VideoPlayerController.file(File(fila.path))
-          ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            setState(() {
-              _controller.play();
-              videochoose = true;
-            });
-          });
+        setState(() {
+          videochoose = true;
+        });
 
+        videoPlayerController = VideoPlayerController.file(File(fila.path))
+          ..initialize().then((value) => setState(() {}));
+        _customVideoPlayerController = CustomVideoPlayerController(
+            context: context,
+            videoPlayerController: videoPlayerController,
+            customVideoPlayerSettings: const CustomVideoPlayerSettings(
+                settingsButtonAvailable: false));
         String fileName = fila.name;
         imagefile = File(fila.path);
 

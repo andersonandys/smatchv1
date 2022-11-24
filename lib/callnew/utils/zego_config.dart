@@ -12,7 +12,7 @@ class ZegoConfig {
   // https://console.zego.im/dashboard
   // for example:
   //     int appID = 123456789;
-  int appID = 0;
+  int appID = 689689888;
 
   ZegoScenario scenario = ZegoScenario.General;
 
@@ -23,8 +23,10 @@ class ZegoConfig {
   // Note: If you need to use a more secure authentication method: token authentication, please refer to [How to upgrade from AppSign authentication to Token authentication](https://doc-zh.zego.im/faq/token_upgrade?product=ExpressVideo&platform=all)
   // for example:
   //     String appSign = "04AAAAAxxxxxxxxxxxxxx";
-  String appSign = "";
-  String token = "";
+  String appSign =
+      "96c72d9809ceef948bdbf9dfd46fad337080617afbff0184838a7a1f7a6f99c3";
+  String token =
+      "04AAAAAGN9GW4AEDF3ODBhMGNoMzh2eTlsM2IAsK15IT383w68NMzOG9MYVeWczwPY/95nIKO9rbuMoAD+W5X2cySI/WnxgGv9Qc7tmo7FwhaTRTIqAEqfw8kF1y8BO6AWlkco3HIGhCI0Pp5J9BW5wTt2HCLkLNWOh7Zw+iNrtZFB/JpSi5T6nVKHO6v1t6LGNihYdHi+W/u5uBsYcfvaE4IaEZ7uFOk+PUAsRxh4gt6A/tBRxZeNMyYpFz6l/uHz6jCEdTtDx9DFSXIF";
 
   // only the web need
   getToken(userID, roomId) async {

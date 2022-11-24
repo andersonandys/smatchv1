@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:smatch/home/tabsrequette.dart';
+import 'package:smatch/login/resetpassword.dart';
 import 'package:smatch/menu/menuhome.dart';
 import 'package:smatch/msgbranche/reqmessage.dart';
 import 'package:smatch/onboarding.dart';
@@ -183,10 +184,21 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                           )),
-                      Text(
-                        "Mot de passe oublié ?",
-                        style: GoogleFonts.ubuntu(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext) {
+                                return SingleChildScrollView(
+                                  child: Resetpassword(),
+                                );
+                              });
+                        },
+                        child: Text(
+                          "Mot de passe oublié ?",
+                          style: GoogleFonts.ubuntu(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                       )
                     ],
                   ),

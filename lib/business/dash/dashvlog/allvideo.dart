@@ -126,22 +126,44 @@ class _AllvideoState extends State<Allvideo> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Chip(
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 label: Text(
-                                                    "${videopub.data!.docs[index]["vue"]} "),
-                                                avatar: const Icon(Iconsax.eye),
+                                                  "${videopub.data!.docs[index]["vue"]}",
+                                                  style: const TextStyle(
+                                                      fontSize: 20),
+                                                ),
+                                                avatar: const Icon(
+                                                  Iconsax.eye,
+                                                  size: 30,
+                                                ),
                                               ),
                                               Chip(
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 label: Text(
-                                                    "${videopub.data!.docs[index]["comment"]} "),
-                                                avatar:
-                                                    const Icon(Iconsax.message),
+                                                  "${videopub.data!.docs[index]["comment"]}",
+                                                  style: const TextStyle(
+                                                      fontSize: 20),
+                                                ),
+                                                avatar: const Icon(
+                                                  Iconsax.message,
+                                                  size: 30,
+                                                ),
                                               ),
                                               Chip(
+                                                padding:
+                                                    const EdgeInsets.all(5),
                                                 label: Text(
-                                                    "${videopub.data!.docs[index]["like"]} "),
-                                                avatar:
-                                                    const Icon(Iconsax.heart),
-                                              )
+                                                  "${videopub.data!.docs[index]["like"]}",
+                                                  style: const TextStyle(
+                                                      fontSize: 20),
+                                                ),
+                                                avatar: const Icon(
+                                                  Iconsax.heart,
+                                                  size: 30,
+                                                ),
+                                              ),
                                             ],
                                           )
                                         ],

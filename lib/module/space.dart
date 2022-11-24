@@ -78,7 +78,7 @@ class _SpaceState extends State<Space> {
       appBar: AppBar(
         backgroundColor: Colors.black.withBlue(25),
         title: Text(
-          'Space',
+          'Spaces',
           style: GoogleFonts.poppins(fontSize: 30),
         ),
         leading: Menuwidget(),
@@ -153,6 +153,7 @@ class _SpaceState extends State<Space> {
                                     ),
                                     const SizedBox(height: 15),
                                     Align(
+                                      alignment: Alignment.center,
                                       child: Text(
                                         _noeud.data!.docs[index]['nom'],
                                         style: GoogleFonts.poppins(
@@ -161,12 +162,12 @@ class _SpaceState extends State<Space> {
                                             fontSize: 20),
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      alignment: Alignment.center,
                                     ),
                                     const SizedBox(
                                       height: 20,
                                     ),
                                     Align(
+                                      alignment: Alignment.center,
                                       child: ActionChip(
                                           backgroundColor: Colors.red,
                                           label: Text(
@@ -181,11 +182,12 @@ class _SpaceState extends State<Space> {
                                                 _noeud.data!.docs[index]
                                                     ["nom"]);
                                           }),
-                                      alignment: Alignment.center,
                                     )
                                   ]),
                                 )),
                             Positioned(
+                              top: 5,
+                              right: 5,
                               child: (_noeud.data!.docs[index]["statut"] == 1)
                                   ? Center(
                                       child: GestureDetector(
@@ -208,8 +210,6 @@ class _SpaceState extends State<Space> {
                                       ),
                                     ))
                                   : Container(),
-                              top: 5,
-                              right: 5,
                             )
                           ],
                         );

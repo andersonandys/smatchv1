@@ -105,7 +105,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   void dispose() {
     _customVideoPlayerController.dispose();
     super.dispose();
-    _controller.dispose();
   }
 
   @override

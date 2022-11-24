@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:smatch/callclub/utils/spacer.dart';
 import 'package:smatch/home/tabsrequette.dart';
 
 class Dashvlog extends StatefulWidget {
@@ -57,8 +58,10 @@ class _DashvlogState extends State<Dashvlog> {
                   }
                 });
               },
+              padding: const EdgeInsets.all(10),
               icon: const Icon(
                 Iconsax.eye,
+                size: 30,
               ))
         ],
       ),
@@ -354,11 +357,9 @@ class _DashvlogState extends State<Dashvlog> {
                                                                               "description"],
                                                                           overflow: TextOverflow
                                                                               .ellipsis,
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ))),
+                                                                          style: const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 18))),
                                                                   const SizedBox(
                                                                     height: 10,
                                                                   ),
@@ -367,26 +368,65 @@ class _DashvlogState extends State<Dashvlog> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Chip(
-                                                                        label: Text(
-                                                                            "${videopub.data!.docs[index]["vue"]} "),
+                                                                      ActionChip(
+                                                                        onPressed:
+                                                                            () {},
+                                                                        backgroundColor: Colors
+                                                                            .white
+                                                                            .withOpacity(0.8),
+                                                                        padding:
+                                                                            const EdgeInsets.all(5),
+                                                                        label:
+                                                                            Text(
+                                                                          "${videopub.data!.docs[index]["vue"]}",
+                                                                          style:
+                                                                              const TextStyle(fontSize: 20),
+                                                                        ),
                                                                         avatar:
-                                                                            const Icon(Iconsax.eye),
+                                                                            const Icon(
+                                                                          Iconsax
+                                                                              .eye,
+                                                                          size:
+                                                                              30,
+                                                                        ),
                                                                       ),
                                                                       Chip(
-                                                                        label: Text(
-                                                                            "${videopub.data!.docs[index]["comment"]} "),
+                                                                        padding:
+                                                                            const EdgeInsets.all(5),
+                                                                        label:
+                                                                            Text(
+                                                                          "${videopub.data!.docs[index]["comment"]}",
+                                                                          style:
+                                                                              const TextStyle(fontSize: 20),
+                                                                        ),
                                                                         avatar:
-                                                                            const Icon(Iconsax.message),
+                                                                            const Icon(
+                                                                          Iconsax
+                                                                              .message,
+                                                                          size:
+                                                                              30,
+                                                                        ),
                                                                       ),
                                                                       Chip(
-                                                                        label: Text(
-                                                                            "${videopub.data!.docs[index]["like"]} "),
+                                                                        padding:
+                                                                            const EdgeInsets.all(5),
+                                                                        label:
+                                                                            Text(
+                                                                          "${videopub.data!.docs[index]["like"]}",
+                                                                          style:
+                                                                              const TextStyle(fontSize: 20),
+                                                                        ),
                                                                         avatar:
-                                                                            const Icon(Iconsax.heart),
+                                                                            const Icon(
+                                                                          Iconsax
+                                                                              .heart,
+                                                                          size:
+                                                                              30,
+                                                                        ),
                                                                       )
                                                                     ],
-                                                                  )
+                                                                  ),
+                                                                  const VerticalSpacer()
                                                                 ],
                                                               ))
                                                         ],
