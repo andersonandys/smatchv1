@@ -41,6 +41,7 @@ import 'package:smatch/noeud/settingsnoeud.dart';
 import 'package:smatch/onboarding.dart';
 import 'package:smatch/wallet/walletuser.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -79,6 +80,7 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
   configLoading();
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

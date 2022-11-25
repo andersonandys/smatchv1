@@ -313,14 +313,10 @@ class _MessagebrancheState extends State<Messagebranche> {
                         }
                       },
                       icon: (mscontrol.recnv.isTrue)
-                          ? const Icon(
-                              Iconsax.stop,
-                              color: Colors.white,
-                            )
-                          : const Icon(
-                              Iconsax.microphone_2,
-                              color: Colors.white,
-                            ))
+                          ? const Icon(Iconsax.stop,
+                              color: Colors.white, size: 30)
+                          : const Icon(Iconsax.microphone_2,
+                              color: Colors.white, size: 30))
                   : GestureDetector(
                       onTap: () {
                         sendmessage();
@@ -328,10 +324,8 @@ class _MessagebrancheState extends State<Messagebranche> {
                       onLongPress: () {
                         translatemessagesend();
                       },
-                      child: const Icon(
-                        Iconsax.send1,
-                        color: Colors.white,
-                      )))
+                      child: const Icon(Iconsax.send1,
+                          color: Colors.white, size: 30)))
               : null,
           filled: true,
           fillColor: Colors.white.withOpacity(0.1),
@@ -1041,6 +1035,7 @@ class _MessagebrancheState extends State<Messagebranche> {
                                                     : Colors.orange,
                                           ),
                                           basicStyle: TextStyle(
+                                            fontSize: 18,
                                             color:
                                                 (msgtream['idsend'] == userid)
                                                     ? Colors.black

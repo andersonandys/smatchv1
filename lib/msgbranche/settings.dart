@@ -1,3 +1,4 @@
+import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -369,42 +370,25 @@ class _SettingsbrancheState extends State<Settingsbranche> {
                   "Aucune video trouvée",
                   style: TextStyle(color: Colors.white),
                 ))
-              : GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.0,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 5.0,
-                      mainAxisExtent: 235),
+              : ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: imglistlessage.data!.docs.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Get.toNamed('/viewvideo', arguments: [
-                          {
-                            "urlfile": imglistlessage.data!.docs[index]
-                                ['urlfile']
-                          }
-                        ]);
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(7))),
-                          margin: const EdgeInsets.all(3),
-                          child: ClipRRect(
+                    return Container(
+                        height: 200,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(7)),
-                            child: CachedNetworkImage(
-                              imageUrl: imglistlessage.data!.docs[index]
-                                  ['vignette'],
-                              fit: BoxFit.cover,
-                            ),
-                          )),
-                    );
+                                const BorderRadius.all(Radius.circular(7))),
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(7)),
+                          child: Displayvido(
+                              videoUrl: imglistlessage.data!.docs[index]
+                                  ["urlfile"]),
+                        ));
                   });
         });
   }
@@ -967,5 +951,40 @@ class _SettingsbrancheState extends State<Settingsbranche> {
         .update({"notification": FieldValue.increment(-1)});
     requ.message("sucess", "Adhésion acceptée avec succès");
     FirebaseFirestore.instance.collection("invitation").doc(iddemande).delete();
+  }
+}
+
+class Displayvido extends StatefulWidget {
+  Displayvido({Key? key, required this.videoUrl}) : super(key: key);
+  String videoUrl;
+  @override
+  _DisplayvidoState createState() => _DisplayvidoState();
+}
+
+class _DisplayvidoState extends State<Displayvido> {
+  late VideoPlayerController videoPlayerController;
+  late CustomVideoPlayerController _customVideoPlayerController;
+  @override
+  void initState() {
+    super.initState();
+    videoPlayerController = VideoPlayerController.network(widget.videoUrl)
+      ..initialize().then((value) => setState(() {}));
+    _customVideoPlayerController = CustomVideoPlayerController(
+        context: context,
+        videoPlayerController: videoPlayerController,
+        customVideoPlayerSettings:
+            const CustomVideoPlayerSettings(enterFullscreenOnStart: false));
+  }
+
+  @override
+  void dispose() {
+    _customVideoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomVideoPlayer(
+        customVideoPlayerController: _customVideoPlayerController);
   }
 }

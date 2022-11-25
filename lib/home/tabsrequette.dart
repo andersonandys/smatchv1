@@ -35,7 +35,7 @@ class Tabsrequette extends GetxController {
       "id_noeud": idNoeud,
       "nbreuser": 1,
       "idcreat": user!.uid,
-      "pubic": publi,
+      "public": publi,
       "typebranche": typebranche,
       "datecreat": dateformat,
       "range": DateTime.now().millisecondsSinceEpoch,

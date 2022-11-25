@@ -15,6 +15,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:smatch/home/settingsvideo.dart';
 import 'package:smatch/home/tabsrequette.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Social extends StatefulWidget {
   const Social({Key? key}) : super(key: key);
@@ -28,12 +29,13 @@ class _SocialState extends State<Social> {
   String nombranche = Get.arguments[1]["nombranche"];
   String idcreat = Get.arguments[2]["idcreat"];
   int admin = Get.arguments[3]["admin"];
-  String affiche = Get.arguments[5]["affiche"];
-  bool publi = Get.arguments[6]["publi"];
+  String affiche = Get.arguments[4]["affiche"];
+  bool publi = Get.arguments[5]["publi"];
   final Stream<QuerySnapshot> streampub = FirebaseFirestore.instance
       .collection("publication")
       .where("idbranche", isEqualTo: Get.arguments[0]["idbranche"])
       .snapshots();
+  final userid = FirebaseAuth.instance.currentUser!.uid;
   @override
   void initState() {
     // TODO: implement initState
@@ -52,7 +54,7 @@ class _SocialState extends State<Social> {
           ),
           centerTitle: true,
           actions: [
-            if (publi)
+            if (publi || idcreat == userid)
               IconButton(
                   onPressed: () {
                     Get.toNamed("mypubsocial", arguments: [
@@ -78,9 +80,21 @@ class _SocialState extends State<Social> {
             int length = snapshot.data!.docs.length;
             List publi = snapshot.data!.docs;
             return (publi.isEmpty)
-                ? const Text(
-                    "aucune data",
-                    style: TextStyle(color: Colors.white),
+                ? EmptyWidget(
+                    hideBackgroundAnimation: true,
+                    image: null,
+                    packageImage: PackageImage.Image_1,
+                    title: 'Aucune publication',
+                    subTitle: 'Aucune publication disponible',
+                    titleTextStyle: const TextStyle(
+                      fontSize: 22,
+                      color: Color(0xff9da9c7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    subtitleTextStyle: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xffabb8d6),
+                    ),
                   )
                 : ListView.builder(
                     shrinkWrap: true,
@@ -180,9 +194,13 @@ class _SocialState extends State<Social> {
                                       child: (publi[index]["typepub"] ==
                                               "compte")
                                           ? Displaylogo(
-                                              idnoeud: publi[index]["idpub"])
+                                              idnoeud: publi[index]["idpub"],
+                                              date: publi[index]["date"],
+                                            )
                                           : Displayavatar(
-                                              iduser: publi[index]["idpub"]),
+                                              iduser: publi[index]["idpub"],
+                                              date: publi[index]["date"],
+                                            ),
                                     ),
                                     Expanded(
                                         child: Displaylike(
@@ -199,7 +217,7 @@ class _SocialState extends State<Social> {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: (publi)
+        floatingActionButton: (publi || idcreat == userid)
             ? FloatingActionButton(
                 heroTag: null,
                 onPressed: () {
@@ -216,8 +234,10 @@ class _SocialState extends State<Social> {
 }
 
 class Displayavatar extends StatefulWidget {
-  Displayavatar({Key? key, required this.iduser}) : super(key: key);
+  Displayavatar({Key? key, required this.iduser, required this.date})
+      : super(key: key);
   String iduser;
+  var date;
   @override
   _DisplayavatarState createState() => _DisplayavatarState();
 }
@@ -256,8 +276,8 @@ class _DisplayavatarState extends State<Displayavatar> {
             style: TextStyle(color: Colors.white),
           ),
           subtitle: Text(
-            'il y a 3h',
-            style: TextStyle(color: Colors.white38),
+            timeago.format(widget.date.toDate(), locale: "fr"),
+            style: const TextStyle(color: Colors.white38),
           ),
         );
       },
@@ -266,8 +286,10 @@ class _DisplayavatarState extends State<Displayavatar> {
 }
 
 class Displaylogo extends StatefulWidget {
-  Displaylogo({Key? key, required this.idnoeud}) : super(key: key);
+  Displaylogo({Key? key, required this.idnoeud, required this.date})
+      : super(key: key);
   String idnoeud;
+  var date;
   @override
   _DisplaylogoState createState() => _DisplaylogoState();
 }
@@ -306,7 +328,7 @@ class _DisplaylogoState extends State<Displaylogo> {
             style: TextStyle(color: Colors.white),
           ),
           subtitle: Text(
-            'il y a 3h',
+            timeago.format(widget.date.toDate(), locale: "fr"),
             style: TextStyle(color: Colors.white38),
           ),
         );
@@ -388,7 +410,19 @@ class _DisplayimageState extends State<Displayimage> {
             ),
           ),
           options: CarouselOptions(
-              height: 300, enlargeStrategy: CenterPageEnlargeStrategy.height),
+            height: 300,
+            aspectRatio: 16 / 9,
+            viewportFraction: 0.8,
+            initialPage: 0,
+            enableInfiniteScroll: true,
+            reverse: false,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 3),
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+            scrollDirection: Axis.horizontal,
+          ),
         );
       },
     );
