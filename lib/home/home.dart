@@ -23,7 +23,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:smatch/callnew/home/home_page.dart';
+import 'package:smatch/callclub/call.dart';
+import 'package:smatch/callclub/conference.dart';
+import 'package:smatch/callclub/live.dart';
+import 'package:smatch/callclub/screens/common/splash_screen.dart';
 import 'package:smatch/club/homeclub.dart';
 import 'package:smatch/club/ui/home/Home.dart';
 import 'package:smatch/home/notification.dart';
@@ -265,7 +268,8 @@ class _homeState extends State<home> {
         actions: [
           GestureDetector(
               onTap: () async {
-                Get.to(() => HomePage());
+                // Get.to(() => HomePage());
+                Get.to(() => Call());
               },
               child: Row(
                 children: <Widget>[

@@ -122,13 +122,15 @@ dependencies:
   dot_navigation_bar: ^1.0.1+4
   custom_pin_screen: ^0.3.0
   local_auth: ^2.1.2
-  zego_express_engine: ^2.23.0
   url_launcher: 6.1.5
   universal_io: 2.0.4
   path_provider: 2.0.11
   archive: 3.3.1
   share_plus: 4.4.0
   timeago: ^3.3.0
+  zego_uikit_prebuilt_live_audio_room: ^1.0.1
+  zego_uikit_prebuilt_video_conference: ^1.1.6
+  zego_uikit_prebuilt_live_streaming: ^1.2.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
