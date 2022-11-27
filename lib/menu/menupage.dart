@@ -46,73 +46,102 @@ class _MenupageState extends State<Menupage> {
   }
 
   @override
-  Widget build(BuildContext context) => Theme(
-      data: ThemeData.dark(),
-      child: Scaffold(
-        backgroundColor: const Color(0xFF101418),
-        body: SafeArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
+  Widget build(BuildContext context) {
+    DateTime lastTimeBackbuttonWasClicked = DateTime.now();
+    return WillPopScope(
+      child: Theme(
+          data: ThemeData.dark(),
+          child: Scaffold(
+            backgroundColor: const Color(0xFF101418),
+            body: SafeArea(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 const SizedBox(
-                  width: 10,
+                  height: 20,
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(avataruser),
-                  radius: 35,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Flexible(
-                    child: Text(
-                  nomuser,
-                  maxLines: 1,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ))
-              ],
-            ),
-            // Text("0769301934"),
-            const SizedBox(
-              height: 30,
-            ),
-            ...MenuItems.all.map(builMenuItem).toList(),
-            const SizedBox(
-              height: 10,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            Expanded(
-                child: Container(
-                    child: ListView(
-              reverse: true,
-              shrinkWrap: true,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Center(
-                    child: Text(
-                      "Copyrigth by AMJ Group",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                      ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 10,
                     ),
-                  ),
-                )
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(avataruser),
+                      radius: 35,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                        child: Text(
+                      nomuser,
+                      maxLines: 1,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ))
+                  ],
+                ),
+                // Text("0769301934"),
+                const SizedBox(
+                  height: 30,
+                ),
+                ...MenuItems.all.map(builMenuItem).toList(),
+                const SizedBox(
+                  height: 10,
+                ),
+
+                const SizedBox(
+                  height: 20,
+                ),
+
+                Expanded(
+                    child: Container(
+                        child: ListView(
+                  reverse: true,
+                  shrinkWrap: true,
+                  children: const [
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Center(
+                          child: Text(
+                            "Copyrigth by AMJ Group",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )))
               ],
-            )))
-          ],
-        )),
-      ));
+            )),
+          )),
+      onWillPop: () async {
+        if (DateTime.now().difference(lastTimeBackbuttonWasClicked) >=
+            const Duration(seconds: 2)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text(
+                "Appuyez à nouveau sur le bouton de retour pour quitter l'application.",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+              duration: Duration(seconds: 5),
+            ),
+          );
+
+          lastTimeBackbuttonWasClicked = DateTime.now();
+          return false;
+        } else {
+          return true;
+        }
+      },
+    );
+  }
+
   builMenuItem(Menuitem item) => ListTileTheme(
       selectedColor: Colors.white,
       child: ListTile(
@@ -126,7 +155,7 @@ class _MenupageState extends State<Menupage> {
         title: Text(
           item.title,
           style: GoogleFonts.poppins(
-            fontSize: 15,
+            fontSize: 17,
             // color: Color(0xff3A4276),
             fontWeight: FontWeight.w700,
           ),
@@ -135,7 +164,6 @@ class _MenupageState extends State<Menupage> {
       ));
 
   deconexion() {
-    print("object");
     Get.defaultDialog(
         onConfirm: () async {
           // await FirebaseAuth.instance

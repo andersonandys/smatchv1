@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:adjeminpay_flutter/adjeminpay_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cinetpay/cinetpay.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -810,19 +811,40 @@ class _WalletuserState extends State<Walletuser> {
           .collection("payment")
           .doc(value.id)
           .update({"idrechargement": value.id});
-      Map<String, dynamic> myOrders = {
-        // ! required transactionId or orderId
-        'transaction_id': value.id,
-        // ! required total amount
-        'total_amount': montantcontroller.text,
-        'currency_code': "XOF",
-        'designation': "Rechargement de compte",
-        'client_name': nomuser,
-      };
+      // Map<String, dynamic> myOrders = {
+      //   // ! required transactionId or orderId
+      //   'transaction_id': value.id,
+      //   // ! required total amount
+      //   'total_amount': montantcontroller.text,
+      //   'currency_code': "XOF",
+      //   'designation': "Rechargement de compte",
+      //   'client_name': nomuser,
+      // };
+      print("ok test");
       setState(() {
         load = false;
       });
-      payWithAdjeminPay(myOrders, value.id);
+      CinetPayCheckout(
+          title: 'YOUR_TITLE',
+          configData: const <String, dynamic>{
+            'apikey': '12845785286114ff4e94f6e9.88416188',
+            'site_id': 608304,
+            'notify_url': 'https://smatchs.000webhostapp.com/'
+          },
+          paymentData: <String, dynamic>{
+            'transaction_id': value.id,
+            'amount': 100,
+            'currency': 'XOF',
+            'channels': 'ALL',
+            'description': 'YOUR_DESCRIPTION'
+          },
+          waitResponse: (response) {
+            print(response);
+          },
+          onError: (error) {
+            print(error);
+          });
+      // payWithAdjeminPay(myOrders, value.id);
     });
   }
 }

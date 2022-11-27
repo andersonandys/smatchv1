@@ -4,10 +4,11 @@ import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_c
 
 class VideoConferencePage extends StatelessWidget {
   final String conferenceID;
-
+  final String username;
   VideoConferencePage({
     Key? key,
     required this.conferenceID,
+    required this.username,
   }) : super(key: key);
   final userid = FirebaseAuth.instance.currentUser!.uid;
   @override
@@ -19,8 +20,8 @@ class VideoConferencePage extends StatelessWidget {
             "96c72d9809ceef948bdbf9dfd46fad337080617afbff0184838a7a1f7a6f99c3",
         userID:
             userid, // userID should only contain numbers, English characters and  '_'
-        userName: 'user_name',
-        conferenceID: "conferenceID",
+        userName: username,
+        conferenceID: conferenceID,
         config: ZegoUIKitPrebuiltVideoConferenceConfig(),
       ),
     );

@@ -171,12 +171,12 @@ class _HomeDicoveryState extends State<HomeDicovery> {
                 Column(
                     children: [
                       Align(
+                        alignment: Alignment.topLeft,
                         child: Text(
                           "Recommander pour vous",
                           style: GoogleFonts.poppins(
                               color: Colors.white, fontSize: 20),
                         ),
-                        alignment: Alignment.topLeft,
                       ),
                       const SizedBox(
                         height: 10,

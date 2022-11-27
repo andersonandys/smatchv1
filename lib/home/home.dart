@@ -25,7 +25,6 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smatch/callclub/call.dart';
 import 'package:smatch/callclub/conference.dart';
-import 'package:smatch/callclub/live.dart';
 import 'package:smatch/callclub/screens/common/splash_screen.dart';
 import 'package:smatch/club/homeclub.dart';
 import 'package:smatch/club/ui/home/Home.dart';
@@ -39,6 +38,7 @@ import 'package:smatch/newuser.dart';
 import 'package:smatch/noeud/creatnoeud.dart';
 import 'package:http/http.dart' as http;
 import 'package:tezster_dart/tezster_dart.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:tezart/tezart.dart' as tezos;
 // import 'package:tezart/tezart.dart';
 // import 'package:tezster_dart/tezster_dart.dart';
@@ -72,6 +72,8 @@ class _homeState extends State<home> {
     maxCoverage: 0.3,
     minCoverage: 0.1,
   );
+  String majtext =
+      "Merci d’utiliser Smatch ! Nous mettons régulièrement à jour notre application pour la rendre plus performante, réparer les bugs et introduire de nouvelles fonctionnalités qui vous aident à rester en contact avec vos fans, familles et vos business";
   users.User? user = users.FirebaseAuth.instance.currentUser;
   final requ = Get.put(Tabsrequette());
   String nomuser = "";
@@ -111,7 +113,7 @@ class _homeState extends State<home> {
   List nomusers = [];
   final sendrequ = Get.put(Changevalue());
   List _abonnenoeud = [];
-
+  int versionapp = 2;
   @override
   initState() {
     super.initState();
@@ -119,6 +121,7 @@ class _homeState extends State<home> {
     getinfouser();
     allnoeuds();
     abonnenoeud();
+    getinfoapp();
     print("laisee");
     if (sendrequ.idnoeuds.isNotEmpty) {
       setState(() {
@@ -154,6 +157,102 @@ class _homeState extends State<home> {
         print(vu);
       }
       print(_abonnenoeud.first);
+    });
+  }
+
+  getinfoapp() {
+    FirebaseFirestore.instance.collection('appinfo').get().then((valueinfo) {
+      if (valueinfo.docs.first["version"] != versionapp) {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return Dialog(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                backgroundColor: Colors.black.withBlue(20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 250,
+                        width: MediaQuery.of(context).size.width,
+                        child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                            child: Image.asset(
+                              "assets/maj2.png",
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'Mise a jour V2 disponible !',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            const Text(
+                              'Nouveautés',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              majtext,
+                              textAlign: TextAlign.justify,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                _launchUniversalLinkIos(Uri.parse(
+                                    "https://play.google.com/store/apps/details?id=com.amj.smatch.amj1"));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange.shade900,
+                                  fixedSize: Size(
+                                      MediaQuery.of(context).size.width, 70),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5))),
+                              child: const Text(
+                                "METTRE À JOUR",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            });
+      }
     });
   }
 
@@ -252,158 +351,208 @@ class _homeState extends State<home> {
     });
   }
 
+  Future<void> _launchUniversalLinkIos(Uri url) async {
+    final bool nativeAppLaunchSucceeded = await launchUrl(
+      url,
+      mode: LaunchMode.externalNonBrowserApplication,
+    );
+    if (!nativeAppLaunchSucceeded) {
+      await launchUrl(
+        url,
+        mode: LaunchMode.inAppWebView,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenheight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.black.withBlue(25),
-      appBar: AppBar(
+    DateTime lastTimeBackbuttonWasClicked = DateTime.now();
+    return WillPopScope(
+      child: Scaffold(
         backgroundColor: Colors.black.withBlue(25),
-        title: Text(
-          'Smatch',
-          style: GoogleFonts.poppins(fontSize: 30),
-        ),
-        leading: const Menuwidget(),
-        elevation: 0,
-        actions: [
-          GestureDetector(
-              onTap: () async {
-                // Get.to(() => HomePage());
-                Get.to(() => Call());
-              },
-              child: Row(
-                children: <Widget>[
-                  const Icon(
-                    IconlyBold.notification,
-                    size: 30,
-                  ),
-                  (notification != 0)
-                      ? Badge(
-                          badgeColor: Colors.greenAccent,
-                          badgeContent: Text(
-                            "$notification",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : const SizedBox()
-                ],
-              )),
-          const SizedBox(
-            width: 10,
+        appBar: AppBar(
+          backgroundColor: Colors.black.withBlue(25),
+          title: Text(
+            'Smatch',
+            style: GoogleFonts.poppins(fontSize: 30),
           ),
-          const SizedBox(
-            width: 10,
-          )
-        ],
-      ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Expanded(
-              child: Container(
-                  padding: const EdgeInsets.all(5),
-                  height: screenheight,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10)),
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Colors.blue.shade800,
-                        Colors.orange.shade900,
-                      ],
+          leading: const Menuwidget(),
+          elevation: 0,
+          actions: [
+            CircleAvatar(
+              backgroundColor: Colors.white.withOpacity(0.5),
+              child: IconButton(
+                  padding: const EdgeInsets.all(6),
+                  onPressed: () {},
+                  icon: Image.asset("assets/icons/conference_appbar.png")),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            GestureDetector(
+                onTap: () async {
+                  Get.to(() => Notificationhome());
+                },
+                child: Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.white.withOpacity(0.5),
+                      child: IconButton(
+                          padding: const EdgeInsets.all(6),
+                          onPressed: () {
+                            Get.to(() => const Notificationhome());
+                          },
+                          icon: Image.asset("assets/icons/notification.png")),
                     ),
-                  ),
-                  child: Obx(() => (sendrequ.nomnoeuds.isEmpty)
-                      ? actualite()
-                      : listbranche()))),
-          // menu sur le coté
+                    (notification == 0)
+                        ? Badge(
+                            badgeColor: Colors.redAccent,
+                            badgeContent: Text(
+                              "$notification",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : const SizedBox()
+                  ],
+                )),
+            const SizedBox(
+              width: 10,
+            ),
+            const SizedBox(
+              width: 10,
+            )
+          ],
+        ),
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Expanded(
+                child: Container(
+                    padding: const EdgeInsets.all(5),
+                    height: screenheight,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colors.blue.shade800,
+                          Colors.orange.shade900,
+                        ],
+                      ),
+                    ),
+                    child: Obx(() => (sendrequ.nomnoeuds.isEmpty)
+                        ? actualite()
+                        : listbranche()))),
+            // menu sur le coté
 
-          Obx(() => (requ.displaynoeud.isTrue)
-              ? Container(
-                  width: 70,
-                  padding: EdgeInsets.all(5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Expanded(
-                        child: listnoeud(),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          creatnoeud();
-                        },
-                        child: DottedBorder(
-                          color: Colors.white,
-                          dashPattern: const [4, 3],
-                          strokeWidth: 2,
-                          strokeCap: StrokeCap.round,
-                          borderType: BorderType.RRect,
-                          radius: const Radius.circular(50),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                                color: Colors.white),
-                            height: 50,
-                            width: 50,
-                            child: const Icon(
-                              Iconsax.add,
-                              size: 30,
+            Obx(() => (requ.displaynoeud.isTrue)
+                ? Container(
+                    width: 70,
+                    padding: EdgeInsets.all(5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Expanded(
+                          child: listnoeud(),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            creatnoeud();
+                          },
+                          child: DottedBorder(
+                            color: Colors.white,
+                            dashPattern: const [4, 3],
+                            strokeWidth: 2,
+                            strokeCap: StrokeCap.round,
+                            borderType: BorderType.RRect,
+                            radius: const Radius.circular(50),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50),
+                                  ),
+                                  color: Colors.white),
+                              height: 50,
+                              width: 50,
+                              child: const Icon(
+                                Iconsax.add,
+                                size: 30,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          requ.displaynoeud.value = false;
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: Colors.red,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
+                        const SizedBox(
+                          height: 10,
                         ),
-                      )
-                    ],
-                  ))
-              : const SizedBox()),
-        ],
+                        GestureDetector(
+                          onTap: () {
+                            requ.displaynoeud.value = false;
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            decoration: const BoxDecoration(
+                                color: Colors.red,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      ],
+                    ))
+                : const SizedBox()),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Obx(() => (requ.displaynoeud.isFalse)
+            ? FloatingActionButton(
+                backgroundColor: Colors.orangeAccent,
+                onPressed: () {
+                  requ.displaynoeud.value = true;
+                },
+                child: const Icon(Iconsax.more),
+              )
+            : const SizedBox()),
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Obx(() => (requ.displaynoeud.isFalse)
-          ? FloatingActionButton(
-              backgroundColor: Colors.orangeAccent,
-              onPressed: () {
-                requ.displaynoeud.value = true;
-              },
-              child: const Icon(Iconsax.more),
-            )
-          : const SizedBox()),
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      onWillPop: () async {
+        if (DateTime.now().difference(lastTimeBackbuttonWasClicked) >=
+            const Duration(seconds: 2)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text(
+                "Appuyez à nouveau sur le bouton de retour pour quitter l'application.",
+                style: TextStyle(fontSize: 18),
+              ),
+              duration: Duration(seconds: 5),
+            ),
+          );
+
+          lastTimeBackbuttonWasClicked = DateTime.now();
+          return false;
+        } else {
+          return true;
+        }
+      },
     );
   }
 
