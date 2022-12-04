@@ -4,10 +4,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:smatch/home/tabsrequette.dart';
 import 'package:smatch/login/resetpassword.dart';
@@ -36,7 +38,7 @@ class _LoginState extends State<Login> {
   final TextStyle titre =
       const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  bool view = false;
   final mailcontroller = TextEditingController();
   final mdpcontroller = TextEditingController();
   String noimage =
@@ -79,237 +81,277 @@ class _LoginState extends State<Login> {
     double screenheight = MediaQuery.of(context).size.height;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                ClipPath(
-                  clipper: DrawClip2(),
-                  child: Container(
-                    width: size.width,
-                    height: size.height * 0.8,
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Color(0xffFFA17F), Color(0xff00223E)],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.bottomRight)),
-                  ),
+      backgroundColor: Colors.black.withBlue(20),
+      body: SafeArea(
+          child: Column(
+        children: <Widget>[
+          SizedBox(
+            child: Column(
+              children: <Widget>[
+                const CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage("assets/logoapp.png"),
                 ),
-                ClipPath(
-                  clipper: DrawClip(),
-                  child: Container(
-                    width: size.width,
-                    height: size.height * 0.8,
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Color(0xffFFA17F), Color(0xff00223E)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight)),
-                  ),
+                const SizedBox(
+                  height: 5,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white.withOpacity(0.3),
-                          backgroundImage:
-                              const AssetImage('assets/logoapp.png')),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      FadeInUp(
-                          duration: const Duration(microseconds: 1400),
-                          delay: const Duration(milliseconds: 300),
-                          child: Text(
-                            'AKWABA,',
-                            style: GoogleFonts.ubuntu(
-                                color: Colors.white,
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          )),
-                      Text(
-                        "Content de te revoir.",
-                        style: GoogleFonts.ubuntu(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      //input textfields
-                      mail("Adresse Mail", true),
-                      mdp("Mot de passe", true),
-
-                      GestureDetector(
-                          onTap: connectmail,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 40),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: const Color(0xffFFA17F),
-                                  borderRadius: BorderRadius.circular(30)),
-                              height: 50,
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Connexion",
-                                      style: GoogleFonts.ubuntu(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    if (loadtype == "mail")
-                                      const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )),
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext) {
-                                return SingleChildScrollView(
-                                  child: Resetpassword(),
-                                );
-                              });
-                        },
-                        child: Text(
-                          "Mot de passe oublié ?",
-                          style: GoogleFonts.ubuntu(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  ),
+                Text(
+                  'SMATCH',
+                  style: GoogleFonts.sansita(color: Colors.white, fontSize: 35),
                 )
               ],
             ),
-            Text(
-              "Ou connectez-vous avec",
-              style: GoogleFonts.ubuntu(
-                  color: Colors.blueGrey, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+              child: Container(
+            margin: const EdgeInsets.only(top: 20),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              // color: Colors.white,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        loadtype = "fb";
-                      });
-                      signInWithFacebook();
-                    },
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: ListView(
+                children: <Widget>[
+                  const Center(
+                    child: Text(
+                      'Connexion',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.black.withBlue(50),
+                      color: const Color(0xfff5f5f5),
+                      child: TextFormField(
+                        // controller: _nombrancheController,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Iconsax.user),
+                          fillColor: Colors.white.withOpacity(0.2),
+                          filled: true,
+                          labelStyle: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                          label: const Text("Adresse mail"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
                       ),
-                      height: 40,
-                      width: 160,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/facebook.png",
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Facebook",
-                              style: GoogleFonts.ubuntu(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            if (loadtype == 'fb')
-                              const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                          ],
+                    ),
+                  ),
+                  Container(
+                    color: Color(0xfff5f5f5),
+                    child: TextFormField(
+                      obscureText: view,
+                      // controller: _nombrancheController,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(IconlyBold.password),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              if (view) {
+                                setState(() {
+                                  view = false;
+                                });
+                              } else {
+                                setState(() {
+                                  view = true;
+                                });
+                              }
+                            },
+                            icon: (view)
+                                ? const Icon(Iconsax.eye)
+                                : const Icon(Iconsax.eye_slash)),
+                        fillColor: Colors.white.withOpacity(0.2),
+                        filled: true,
+                        labelStyle: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        label: const Text("Mot de passe"),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(
-                    width: 10,
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        connectmail();
+                      }, //since this is only a UI app
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange.shade900,
+                          fixedSize:
+                              Size(MediaQuery.of(context).size.width, 70),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            'Connexion',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (loadtype == "mail")
+                            const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        loadtype = "goo";
-                      });
-                      signInWithGoogle();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext) {
+                            return SingleChildScrollView(
+                              child: Resetpassword(),
+                            );
+                          });
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.black.withBlue(50),
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: Text(
+                        'Mot de passe oublié ?',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.bold),
                       ),
-                      height: 40,
-                      width: 160,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/goo.png",
-                              color: Colors.white,
-                              height: 20,
-                              width: 20,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Google",
-                              style: GoogleFonts.ubuntu(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            if (loadtype == "goo")
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            loadtype = "fb";
+                          });
+                          signInWithFacebook();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.black.withBlue(20),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(7))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              const CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/facebook.png")),
                               const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                          ],
+                                height: 10,
+                              ),
+                              const Text(
+                                'Facebook',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              if (loadtype == 'fb')
+                                const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            loadtype = "goo";
+                          });
+                          signInWithGoogle();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.black.withBlue(20),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(7))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              const CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/goo.png")),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text(
+                                'Google',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              if (loadtype == "goo")
+                                const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showcreatecompte();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 30, bottom: 20),
+                      child: Center(
+                        child: RichText(
+                          text: const TextSpan(children: [
+                            TextSpan(
+                                text: "Vous n'avez pas de compte ? ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                )),
+                            TextSpan(
+                                text: "Creer un compte",
+                                style: TextStyle(
+                                  color: Color(0xffff2d55),
+                                  fontSize: 16,
+                                ))
+                          ]),
                         ),
                       ),
                     ),
@@ -317,33 +359,17 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Vous n'avez pas de compte ?",
-                  style: GoogleFonts.ubuntu(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showcreatecompte();
-                  },
-                  child: Text("creer un compte",
-                      style: GoogleFonts.ubuntu(
-                        color: const Color(0xff5172b4),
-                        fontWeight: FontWeight.bold,
-                      )),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    ));
+          )),
+          Text(
+            'COPYRIGHT BY AMJ GROUPE',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          )
+        ],
+      )),
+    );
   }
 
   connectmail() async {

@@ -271,6 +271,7 @@ class _SettingsvlogState extends State<Settingsvlog> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
+                                      print(idchaine);
                                       displayadmin(
                                           _compte.data!.docs[index]['idcreat']);
                                     },
@@ -558,7 +559,7 @@ class _SettingsvlogState extends State<Settingsvlog> {
                                                       1 ||
                                               _admin.data!.docs[index]
                                                       ['idcreat'] ==
-                                                  userid)
+                                                  allusers['iduser'])
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment

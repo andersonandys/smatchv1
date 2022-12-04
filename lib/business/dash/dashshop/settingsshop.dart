@@ -312,6 +312,8 @@ class _SettingsshopState extends State<Settingsshop> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
+                                      print(
+                                          _compte.data!.docs[index]['idcreat']);
                                       displayadmin(
                                           _compte.data!.docs[index]['idcreat']);
                                     },
@@ -811,9 +813,7 @@ class _SettingsshopState extends State<Settingsshop> {
                                                   _admin.data!.docs[index]
                                                           ['statut'] ==
                                                       1 ||
-                                              _admin.data!.docs[index]
-                                                      ['idcreat'] ==
-                                                  userid)
+                                              idcreat == allusers['iduser'])
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -825,9 +825,9 @@ class _SettingsshopState extends State<Settingsshop> {
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w500)),
-                                                (idcreat ==
-                                                        _admin.data!.docs[index]
-                                                            ["iduser"])
+                                                (_admin.data!.docs[index]
+                                                            ['idcreat'] ==
+                                                        allusers['iduser'])
                                                     ? ActionChip(
                                                         backgroundColor:
                                                             Colors.lightBlue,

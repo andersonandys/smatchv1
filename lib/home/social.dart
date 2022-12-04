@@ -34,6 +34,7 @@ class _SocialState extends State<Social> {
   final Stream<QuerySnapshot> streampub = FirebaseFirestore.instance
       .collection("publication")
       .where("idbranche", isEqualTo: Get.arguments[0]["idbranche"])
+      .orderBy("range", descending: true)
       .snapshots();
   final userid = FirebaseAuth.instance.currentUser!.uid;
   @override
@@ -82,8 +83,8 @@ class _SocialState extends State<Social> {
             return (publi.isEmpty)
                 ? EmptyWidget(
                     hideBackgroundAnimation: true,
-                    image: null,
-                    packageImage: PackageImage.Image_1,
+                    image: "assets/inbox.png",
+                    packageImage: null,
                     title: 'Aucune publication',
                     subTitle: 'Aucune publication disponible',
                     titleTextStyle: const TextStyle(
@@ -92,7 +93,7 @@ class _SocialState extends State<Social> {
                       fontWeight: FontWeight.w500,
                     ),
                     subtitleTextStyle: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 18,
                       color: Color(0xffabb8d6),
                     ),
                   )
@@ -219,7 +220,6 @@ class _SocialState extends State<Social> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: (publi || idcreat == userid)
             ? FloatingActionButton(
-                heroTag: null,
                 onPressed: () {
                   Get.toNamed("/socialpub", arguments: [
                     {"nombranche": nombranche},
@@ -779,8 +779,8 @@ class _MypublicationsocialState extends State<Mypublicationsocial> {
           return (datavideo.isEmpty)
               ? EmptyWidget(
                   hideBackgroundAnimation: true,
-                  image: null,
-                  packageImage: PackageImage.Image_1,
+                  image: "assets/inbox.png",
+                  packageImage: null,
                   title: 'Aucun contenu',
                   subTitle: "Aucun contenu publier pour l'intant",
                   titleTextStyle: const TextStyle(
@@ -789,7 +789,7 @@ class _MypublicationsocialState extends State<Mypublicationsocial> {
                     fontWeight: FontWeight.w500,
                   ),
                   subtitleTextStyle: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 18,
                     color: Color(0xffabb8d6),
                   ),
                 )
@@ -836,21 +836,33 @@ class _MypublicationsocialState extends State<Mypublicationsocial> {
                               Row(
                                 children: <Widget>[
                                   Chip(
+                                      backgroundColor:
+                                          Colors.black.withBlue(20),
                                       padding: const EdgeInsets.all(10),
-                                      avatar: const Icon(Iconsax.heart),
+                                      avatar: const Icon(
+                                        Iconsax.heart,
+                                        color: Colors.white,
+                                      ),
                                       label: Text(
                                         "${datavideo[index]["nbrelike"]} ",
-                                        style: const TextStyle(fontSize: 16),
+                                        style: const TextStyle(
+                                            fontSize: 18, color: Colors.white),
                                       )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Chip(
+                                      backgroundColor:
+                                          Colors.black.withBlue(20),
                                       padding: const EdgeInsets.all(10),
-                                      avatar: const Icon(Iconsax.message),
+                                      avatar: const Icon(
+                                        Iconsax.message,
+                                        color: Colors.white,
+                                      ),
                                       label: Text(
                                         "${datavideo[index]["nbrecomment"]} ",
-                                        style: const TextStyle(fontSize: 16),
+                                        style: const TextStyle(
+                                            fontSize: 16, color: Colors.white),
                                       ))
                                 ],
                               ),

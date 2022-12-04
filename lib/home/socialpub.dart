@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
@@ -26,6 +27,9 @@ class Socialpub extends StatefulWidget {
 }
 
 class _SocialpubState extends State<Socialpub> {
+  late VideoPlayerController videoPlayerController;
+  late CustomVideoPlayerController _customVideoPlayerController;
+
   List imageselect = [];
   String comptepub = "branche";
   String nomcomptepub = Get.arguments[0]["nombranche"];
@@ -89,33 +93,33 @@ class _SocialpubState extends State<Socialpub> {
         ),
         body: Container(
           padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                leading: CircleAvatar(
-                  radius: 30,
-                  backgroundImage: CachedNetworkImageProvider(avatarcompte),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: CachedNetworkImageProvider(avatarcompte),
+                  ),
+                  title: Text(
+                    nomcomptepub,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  trailing: IconButton(
+                      onPressed: () {
+                        option();
+                      },
+                      icon: const Icon(
+                        Iconsax.more,
+                        size: 30,
+                        color: Colors.white,
+                      )),
                 ),
-                title: Text(
-                  nomcomptepub,
-                  style: const TextStyle(color: Colors.white),
+                const SizedBox(
+                  height: 20,
                 ),
-                trailing: IconButton(
-                    onPressed: () {
-                      option();
-                    },
-                    icon: const Icon(
-                      Iconsax.more,
-                      size: 30,
-                      color: Colors.white,
-                    )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: DetectableTextField(
+                DetectableTextField(
                   controller: contenucontroller,
                   basicStyle: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
@@ -132,114 +136,78 @@ class _SocialpubState extends State<Socialpub> {
                     print('finished');
                   },
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              if (videopath.isNotEmpty)
-                Stack(
-                  children: [
-                    Container(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          )),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        child: Image.file(
-                          File(vignette),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                        right: 5,
-                        top: 5,
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withBlue(30),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(100),
-                              )),
-                          child: Center(
-                              child: GestureDetector(
-                            onTap: () {
-                              Get.toNamed("readvideo", arguments: [
-                                {"path": videopath}
-                              ]);
-                            },
-                            child: const Icon(
-                              Iconsax.video_circle,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          )),
-                        ))
-                  ],
+                const SizedBox(
+                  height: 20,
                 ),
-              if (typecontenu == "image")
-                SizedBox(
-                  height: 150,
-                  // color: Colors.white,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: imageselect.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext, index) {
-                        return Stack(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
+                if (videopath.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.only(bottom: 50),
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: CustomVideoPlayer(
+                          customVideoPlayerController:
+                              _customVideoPlayerController),
+                    ),
+                  ),
+                if (typecontenu == "image")
+                  SizedBox(
+                    height: 150,
+                    // color: Colors.white,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: imageselect.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext, index) {
+                          return Stack(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    )),
+                                height: 200,
+                                width: 200,
+                                margin: const EdgeInsets.only(left: 10),
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10),
-                                  )),
-                              height: 200,
-                              width: 200,
-                              margin: const EdgeInsets.only(left: 10),
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                child: Image.file(
-                                  File(imageselect[index]),
-                                  fit: BoxFit.cover,
+                                  ),
+                                  child: Image.file(
+                                    File(imageselect[index]),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                                right: 2,
-                                top: 2,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                              Positioned(
+                                  right: 2,
+                                  top: 2,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.5),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
                                     ),
-                                  ),
-                                  padding: EdgeInsets.all(1),
-                                  child: IconButton(
-                                      onPressed: () {
-                                        deleteimage(imageselect[index]);
-                                      },
-                                      icon: const Icon(
-                                        Iconsax.close_circle,
-                                        size: 30,
-                                      )),
-                                ))
-                          ],
-                        );
-                      }),
-                ),
-            ],
+                                    padding: EdgeInsets.all(1),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          deleteimage(imageselect[index]);
+                                        },
+                                        icon: const Icon(
+                                          Iconsax.close_circle,
+                                          size: 30,
+                                        )),
+                                  ))
+                            ],
+                          );
+                        }),
+                  ),
+              ],
+            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -295,7 +263,7 @@ class _SocialpubState extends State<Socialpub> {
                       ? const Icon(Iconsax.send_1)
                       : (typecontenu == "video" && progress > 0.0)
                           ? CircularProgressIndicator(
-                              color: Colors.red,
+                              color: Colors.white,
                               value: progress / 100,
                             )
                           : const Icon(Iconsax.send_1))
@@ -406,13 +374,15 @@ class _SocialpubState extends State<Socialpub> {
     final ImagePicker picker = ImagePicker();
     final XFile? video = await picker.pickVideo(source: ImageSource.gallery);
     if (video != null) {
-      final thumbnailFile = await VideoCompress.getFileThumbnail(video.path,
-          quality: 50, // default(100)
-          position: -1 // default(-1)
-          );
+      videoPlayerController = VideoPlayerController.file(File(video.path))
+        ..initialize().then((value) => setState(() {}));
+      _customVideoPlayerController = CustomVideoPlayerController(
+          context: context,
+          videoPlayerController: videoPlayerController,
+          customVideoPlayerSettings:
+              const CustomVideoPlayerSettings(settingsButtonAvailable: false));
 
       setState(() {
-        vignette = thumbnailFile.path;
         imageselect = [];
         typecontenu = "video";
         videopath = video.path;
@@ -422,29 +392,54 @@ class _SocialpubState extends State<Socialpub> {
   }
 
   sendpublicatio() {
-    instance.collection("publication").add({
-      "text": contenucontroller.text,
-      "idpub": idcompte,
-      "typepub": typepub,
-      "nbreimage": imageselect.length,
-      "nbrelike": 0,
-      "range": DateTime.now().millisecondsSinceEpoch,
-      "nbrecomment": 0,
-      "typecontenu": typecontenu,
-      "date": DateTime.now(),
-      "typebranche": "social",
-      "idbranche": idbranche,
-      "id": "",
-      'video': ""
-    }).then((value) {
-      instance.collection("publication").doc(value.id).update({"id": value.id});
-      if (typecontenu == "image") {
-        int nbre = 0;
-        for (String element in imageselect) {
+    if (contenucontroller.text.isNotEmpty ||
+        imageselect.isNotEmpty ||
+        videoname.isNotEmpty) {
+      instance.collection("publication").add({
+        "text": contenucontroller.text,
+        "idpub": idcompte,
+        "typepub": typepub,
+        "nbreimage": imageselect.length,
+        "nbrelike": 0,
+        "range": DateTime.now().millisecondsSinceEpoch,
+        "nbrecomment": 0,
+        "typecontenu": typecontenu,
+        "date": DateTime.now(),
+        "typebranche": "social",
+        "idbranche": idbranche,
+        "id": "",
+        'video': ""
+      }).then((value) {
+        instance
+            .collection("publication")
+            .doc(value.id)
+            .update({"id": value.id});
+        if (typecontenu == "image") {
+          int nbre = 0;
+          for (String element in imageselect) {
+            UploadTask task = FirebaseStorage.instance
+                .ref()
+                .child("business/$element")
+                .putFile(File(element));
+
+            task.snapshotEvents.listen((event) {
+              setState(() {
+                progress = ((event.bytesTransferred.toDouble() /
+                            event.totalBytes.toDouble()) *
+                        100)
+                    .roundToDouble();
+                print(progress / 100);
+              });
+            });
+            task.whenComplete(() => upload("image", value.id, element));
+            print(nbre++);
+          }
+        }
+        if (typecontenu == "video") {
           UploadTask task = FirebaseStorage.instance
               .ref()
-              .child("business/$element")
-              .putFile(File(element));
+              .child("business/$videoname")
+              .putFile(File(videopath));
 
           task.snapshotEvents.listen((event) {
             setState(() {
@@ -455,32 +450,14 @@ class _SocialpubState extends State<Socialpub> {
               print(progress / 100);
             });
           });
-          task.whenComplete(() => upload("image", value.id, element));
-          print(nbre++);
+          task.whenComplete(() => upload("video", value.id, videoname));
         }
-      }
-      if (typecontenu == "video") {
-        UploadTask task = FirebaseStorage.instance
-            .ref()
-            .child("business/$videoname")
-            .putFile(File(videopath));
-
-        task.snapshotEvents.listen((event) {
-          setState(() {
-            progress = ((event.bytesTransferred.toDouble() /
-                        event.totalBytes.toDouble()) *
-                    100)
-                .roundToDouble();
-            print(progress / 100);
-          });
+        setState(() {
+          contenucontroller.text = "";
+          imageselect = [];
         });
-        task.whenComplete(() => upload("video", value.id, videoname));
-      }
-      setState(() {
-        contenucontroller.text = "";
-        imageselect = [];
       });
-    });
+    }
   }
 
   Future<void> upload(type, valueid, name) async {

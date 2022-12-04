@@ -198,7 +198,7 @@ class _GeneratephraseState extends State<Generatephrase> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Text(
-                'Nous vou prions de recopier votre prhase mnemonique dans un lieux important. \n \n Nous ne somme pas responsable de la sauvegarde de vos phrase. \n \n Smatch ne garde pas une copie de vos mots alors nous ne pourrons pas vous les restituer.',
+                'Nous vous prions de recopier votre phrase mnémonique dans un lieu important. \n \n Nous ne sommes pas responsable de la sauvegarde de vos phrases. \n \n Smatch ne garde pas une copie de vos mots alors nous ne pourrons pas vous les restituer.',
                 style: TextStyle(color: Colors.white70, fontSize: 18),
               ),
               const SizedBox(height: 16),

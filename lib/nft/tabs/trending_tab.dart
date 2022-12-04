@@ -7,14 +7,7 @@ class TrendingTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: 5,
-        shrinkWrap: true,
-        itemBuilder: (BuildContext, index) {
-          return NftCard(
-            imagePath: 'assets/nft/mask.jpeg',
-          );
-        });
+    return NftCard();
     ;
   }
 }

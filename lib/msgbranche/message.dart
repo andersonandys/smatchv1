@@ -23,9 +23,12 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:siri_wave/siri_wave.dart';
 import 'package:smatch/call/screens/startup_screen.dart';
+import 'package:smatch/callclub/conference.dart';
 import 'package:smatch/callclub/screens/common/join_screen.dart';
+import 'package:smatch/home/empty.dart';
 import 'package:smatch/home/home.dart';
 import 'package:smatch/home/tabsrequette.dart';
+import 'package:smatch/msgbranche/initsalon.dart';
 import 'package:smatch/msgbranche/options.dart';
 import 'package:smatch/msgbranche/requmessage.dart';
 import 'package:smatch/noeud/creatnoeud.dart';
@@ -191,10 +194,16 @@ class _MessagebrancheState extends State<Messagebranche> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(() => JoinScreen(
-                      nameuser: nameuser,
-                      idbranche: idbranche,
-                    ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Initsalon(
+                            avataruser: avataruser,
+                            idbranche: idbranche,
+                            nombranche: nombranche,
+                            nomuser: nameuser,
+                          )),
+                );
               },
               icon: const Icon(Icons.call)),
           IconButton(
@@ -761,22 +770,7 @@ class _MessagebrancheState extends State<Messagebranche> {
           return const Center(child: CircularProgressIndicator());
         }
         return (msgtream.data!.docs.isEmpty)
-            ? EmptyWidget(
-                hideBackgroundAnimation: true,
-                image: null,
-                packageImage: PackageImage.Image_3,
-                title: 'Aucun message',
-                subTitle: 'Soyer le premier à envoyer un message',
-                titleTextStyle: const TextStyle(
-                  fontSize: 22,
-                  color: Color(0xff9da9c7),
-                  fontWeight: FontWeight.w500,
-                ),
-                subtitleTextStyle: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xffabb8d6),
-                ),
-              )
+            ? Empty()
             : StickyGroupedListView(
                 reverse: true,
                 floatingHeader: true,

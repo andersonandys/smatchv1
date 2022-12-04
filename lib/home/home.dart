@@ -29,6 +29,7 @@ import 'package:smatch/callclub/screens/common/splash_screen.dart';
 import 'package:smatch/club/homeclub.dart';
 import 'package:smatch/club/ui/home/Home.dart';
 import 'package:smatch/home/notification.dart';
+import 'package:smatch/home/presentation.dart';
 import 'package:smatch/home/stackuser.dart';
 import 'package:smatch/home/stories.dart';
 import 'package:smatch/home/tabsrequette.dart';
@@ -379,43 +380,30 @@ class _homeState extends State<home> {
           ),
           leading: const Menuwidget(),
           elevation: 0,
+          centerTitle: true,
           actions: [
-            CircleAvatar(
-              backgroundColor: Colors.white.withOpacity(0.5),
-              child: IconButton(
-                  padding: const EdgeInsets.all(6),
-                  onPressed: () {},
-                  icon: Image.asset("assets/icons/conference_appbar.png")),
-            ),
             const SizedBox(
               width: 10,
             ),
-            GestureDetector(
-                onTap: () async {
-                  Get.to(() => Notificationhome());
-                },
-                child: Row(
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.white.withOpacity(0.5),
-                      child: IconButton(
-                          padding: const EdgeInsets.all(6),
-                          onPressed: () {
-                            Get.to(() => const Notificationhome());
-                          },
-                          icon: Image.asset("assets/icons/notification.png")),
-                    ),
-                    (notification == 0)
-                        ? Badge(
-                            badgeColor: Colors.redAccent,
-                            badgeContent: Text(
-                              "$notification",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          )
-                        : const SizedBox()
-                  ],
-                )),
+            // Row(
+            //   children: <Widget>[
+            //     IconButton(
+            //         padding: const EdgeInsets.all(6),
+            //         onPressed: () {
+            //           Get.to(() => const Notificationhome());
+            //         },
+            //         icon: const Icon(Iconsax.notification)),
+            //     (notification != 0)
+            //         ? Badge(
+            //             badgeColor: Colors.redAccent,
+            //             badgeContent: Text(
+            //               "$notification",
+            //               style: const TextStyle(color: Colors.white),
+            //             ),
+            //           )
+            //         : const SizedBox()
+            //   ],
+            // ),
             const SizedBox(
               width: 10,
             ),
@@ -929,90 +917,103 @@ class _homeState extends State<home> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    ActionChip(
-                      onPressed: () {
-                        setState(() {
-                          print(sendrequ.idnoeuds.value);
-                          _brancheStream = FirebaseFirestore.instance
-                              .collection('branche')
-                              .where("id_noeud",
-                                  isEqualTo: sendrequ.idnoeuds.value)
-                              .where("typebranche", isEqualTo: "inbox")
-                              .orderBy("range", descending: true)
-                              .snapshots();
-                        });
-                      },
-                      backgroundColor: Colors.black.withBlue(20),
-                      disabledColor: Colors.black.withBlue(20),
-                      padding: const EdgeInsets.all(10),
-                      labelStyle: const TextStyle(color: Colors.white),
-                      label: const Text(
-                        'Inbox',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      avatar: const Icon(
-                        Iconsax.message,
-                        color: Colors.white,
-                      ),
-                    ),
-                    ActionChip(
-                      onPressed: () {
-                        setState(() {
-                          _brancheStream = FirebaseFirestore.instance
-                              .collection('branche')
-                              .where("id_noeud",
-                                  isEqualTo: sendrequ.idnoeuds.value)
-                              .where("typebranche", isEqualTo: "social")
-                              .orderBy("range", descending: true)
-                              .snapshots();
-                        });
-                      },
-                      backgroundColor: Colors.black.withBlue(20),
-                      disabledColor: Colors.black.withBlue(20),
-                      padding: const EdgeInsets.all(10),
-                      labelStyle: const TextStyle(color: Colors.white),
-                      label: const Text(
-                        'Social',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      avatar: const Icon(
-                        Iconsax.message,
-                        color: Colors.white,
-                      ),
-                    ),
-                    ActionChip(
-                      onPressed: () {
-                        setState(() {
-                          _brancheStream = FirebaseFirestore.instance
-                              .collection('branche')
-                              .where("id_noeud",
-                                  isEqualTo: sendrequ.idnoeuds.value)
-                              .where("typebranche", isEqualTo: "video")
-                              .orderBy("range", descending: true)
-                              .snapshots();
-                        });
-                      },
-                      backgroundColor: Colors.black.withBlue(20),
-                      disabledColor: Colors.black.withBlue(20),
-                      padding: const EdgeInsets.all(10),
-                      labelStyle: TextStyle(color: Colors.white),
-                      label: const Text(
-                        'Video',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      avatar: const Icon(
-                        Iconsax.message,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
+                SizedBox(
+                    height: 50,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: ActionChip(
+                              onPressed: () {
+                                setState(() {
+                                  print(sendrequ.idnoeuds.value);
+                                  _brancheStream = FirebaseFirestore.instance
+                                      .collection('branche')
+                                      .where("id_noeud",
+                                          isEqualTo: sendrequ.idnoeuds.value)
+                                      .where("typebranche", isEqualTo: "inbox")
+                                      .orderBy("range", descending: true)
+                                      .snapshots();
+                                });
+                              },
+                              backgroundColor: Colors.black.withBlue(20),
+                              disabledColor: Colors.black.withBlue(20),
+                              padding: const EdgeInsets.all(10),
+                              labelStyle: const TextStyle(color: Colors.white),
+                              label: const Text(
+                                'Inbox',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              avatar: const Icon(
+                                Iconsax.message,
+                                color: Colors.white,
+                              ),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: ActionChip(
+                            onPressed: () {
+                              setState(() {
+                                _brancheStream = FirebaseFirestore.instance
+                                    .collection('branche')
+                                    .where("id_noeud",
+                                        isEqualTo: sendrequ.idnoeuds.value)
+                                    .where("typebranche", isEqualTo: "social")
+                                    .orderBy("range", descending: true)
+                                    .snapshots();
+                              });
+                            },
+                            backgroundColor: Colors.black.withBlue(20),
+                            disabledColor: Colors.black.withBlue(20),
+                            padding: const EdgeInsets.all(10),
+                            labelStyle: const TextStyle(color: Colors.white),
+                            label: const Text(
+                              'Social',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            avatar: const Icon(
+                              Iconsax.activity,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: ActionChip(
+                              onPressed: () {
+                                setState(() {
+                                  _brancheStream = FirebaseFirestore.instance
+                                      .collection('branche')
+                                      .where("id_noeud",
+                                          isEqualTo: sendrequ.idnoeuds.value)
+                                      .where("typebranche", isEqualTo: "video")
+                                      .orderBy("range", descending: true)
+                                      .snapshots();
+                                });
+                              },
+                              backgroundColor: Colors.black.withBlue(20),
+                              disabledColor: Colors.black.withBlue(20),
+                              padding: const EdgeInsets.all(10),
+                              labelStyle: TextStyle(color: Colors.white),
+                              label: const Text(
+                                'Video',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              avatar: const Icon(
+                                Iconsax.video,
+                                color: Colors.white,
+                              ),
+                            ))
+                      ],
+                    )),
+
                 const SizedBox(
                   height: 10,
                 ),
@@ -1226,29 +1227,38 @@ class _homeState extends State<home> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    ListTile(
-                                      leading: Text(
-                                        "@ ${snapshot.data!.docs[index]["nom"]}",
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                      trailing: (snapshot.data!.docs[index]
-                                                      ["statut"] ==
-                                                  "public" &&
-                                              snapshot.data!.docs[index]
-                                                      ["offre"] ==
-                                                  "gratuit")
-                                          ? const Icon(
-                                              IconlyLight.unlock,
-                                              size: 30,
-                                              color: Colors.white,
-                                            )
-                                          : const Icon(
-                                              IconlyLight.lock,
-                                              size: 30,
-                                              color: Colors.white,
-                                            ),
-                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: Text(
+                                              "@ ${snapshot.data!.docs[index]["nom"]}",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            )),
+                                            (snapshot.data!.docs[index]
+                                                            ["statut"] ==
+                                                        "public" &&
+                                                    snapshot.data!.docs[index]
+                                                            ["offre"] ==
+                                                        "gratuit")
+                                                ? const Icon(
+                                                    IconlyLight.unlock,
+                                                    size: 30,
+                                                    color: Colors.white,
+                                                  )
+                                                : const Icon(
+                                                    IconlyLight.lock,
+                                                    size: 30,
+                                                    color: Colors.white,
+                                                  ),
+                                          ],
+                                        )),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 10),

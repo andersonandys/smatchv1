@@ -25,6 +25,7 @@ class _HomecryptoState extends State<Homecrypto> {
         actions: const [
           CircleAvatar(
             radius: 25,
+            backgroundImage: AssetImage("assets/nft/apiens_1.png"),
           ),
           SizedBox(
             width: 10,
@@ -54,14 +55,19 @@ class _HomecryptoState extends State<Homecrypto> {
                         width: 200,
                         child: RichText(
                           text: const TextSpan(
-                            text: 'Solde \n \n',
+                            text: 'Solde \n',
                             style: TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.normal),
                             children: <TextSpan>[
                               TextSpan(
-                                text: "200 TZ",
+                                text: "200 TZ\n",
                                 style: TextStyle(
-                                    fontSize: 40, fontWeight: FontWeight.bold),
+                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: "2000M UP",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -136,7 +142,7 @@ class _HomecryptoState extends State<Homecrypto> {
                             backgroundColor: const Color(0xFFDFF0FF),
                             avatar: const Icon(Icons.stacked_bar_chart),
                             label: const Text(
-                              'Stakin',
+                              'Staking',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )),
@@ -197,7 +203,7 @@ class _HomecryptoState extends State<Homecrypto> {
                                       fontWeight: FontWeight.bold),
                                   children: <TextSpan>[
                                     TextSpan(
-                                        text: "date",
+                                        text: "",
                                         style: TextStyle(
                                             fontWeight: FontWeight.normal)),
                                   ],

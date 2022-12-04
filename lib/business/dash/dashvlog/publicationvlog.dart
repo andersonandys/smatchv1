@@ -402,10 +402,7 @@ class _PublicationvlogState extends State<Publicationvlog> {
           _customVideoPlayerController.dispose();
 
           setState(() {
-            categorie = null;
             viewprogressbar = false;
-            video = "";
-            image1 = "";
             videochoose = false;
           });
         }
@@ -446,6 +443,11 @@ class _PublicationvlogState extends State<Publicationvlog> {
           .collection("noeud")
           .doc(idvlog)
           .update({"nbrevideo": FieldValue.increment(1)});
+      setState(() {
+        categorie = null;
+        video = "";
+        image1 = "";
+      });
     }
   }
 

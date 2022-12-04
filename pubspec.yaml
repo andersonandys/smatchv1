@@ -128,11 +128,10 @@ dependencies:
   archive: 3.3.1
   share_plus: 4.4.0
   timeago: ^3.3.0
+  concentric_transition: ^1.0.3
   cinetpay: ^1.0.5
-  zego_uikit: ^1.7.0
-  zego_express_engine: ^2.23.0
-  zego_uikit_prebuilt_live_audio_room: ^1.0.1
-  zego_uikit_prebuilt_video_conference: ^1.1.6
+  zego_uikit_prebuilt_live_audio_room: ^1.0.4
+  zego_uikit_prebuilt_video_conference: ^1.1.8
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -188,7 +188,7 @@ class _VideofeedpubState extends State<Videofeedpub> {
                   },
                   child: (typecontenu == "video" && progress > 0.0)
                       ? CircularProgressIndicator(
-                          color: Colors.red,
+                          color: Colors.white,
                           value: progress / 100,
                         )
                       : const Icon(Iconsax.send_1))
@@ -291,28 +291,33 @@ class _VideofeedpubState extends State<Videofeedpub> {
   }
 
   sendpublicatio() {
-    instance.collection("publication").add({
-      "text": contenucontroller.text,
-      "idpub": idcompte,
-      "typepub": typepub,
-      "nbreimage": imageselect.length,
-      "nbrelike": 0,
-      "range": DateTime.now().millisecondsSinceEpoch,
-      "nbrecomment": 0,
-      "typecontenu": typecontenu,
-      "date": DateTime.now(),
-      "typebranche": "video",
-      "idbranche": idbranche,
-      "id": "",
-      'video': ""
-    }).then((value) {
-      print("enregistre");
-      print(value.id);
-      instance.collection("publication").doc(value.id).update({"id": value.id});
-      if (videoname.isNotEmpty) {
-        uploadfile(value.id);
-      }
-    });
+    if (contenucontroller.text.isNotEmpty && videoname.isNotEmpty) {
+      instance.collection("publication").add({
+        "text": contenucontroller.text,
+        "idpub": idcompte,
+        "typepub": typepub,
+        "nbreimage": imageselect.length,
+        "nbrelike": 0,
+        "range": DateTime.now().millisecondsSinceEpoch,
+        "nbrecomment": 0,
+        "typecontenu": typecontenu,
+        "date": DateTime.now(),
+        "typebranche": "video",
+        "idbranche": idbranche,
+        "id": "",
+        'video': ""
+      }).then((value) {
+        print("enregistre");
+        print(value.id);
+        instance
+            .collection("publication")
+            .doc(value.id)
+            .update({"id": value.id});
+        if (videoname.isNotEmpty) {
+          uploadfile(value.id);
+        }
+      });
+    }
   }
 
   uploadfile(value) {

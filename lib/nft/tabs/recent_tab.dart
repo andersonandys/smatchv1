@@ -7,8 +7,6 @@ class RecentTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NftCard(
-      imagePath: 'assets/nft/apiens_1.png',
-    );
+    return NftCard();
   }
 }

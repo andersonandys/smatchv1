@@ -83,10 +83,10 @@ class _ViewsocialState extends State<Viewsocial> {
     return Scaffold(
       backgroundColor: Colors.black.withBlue(30),
       appBar: AppBar(
-        backgroundColor: Colors.orange.shade900,
+        backgroundColor: Colors.black.withBlue(30),
         elevation: 0,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,17 +94,10 @@ class _ViewsocialState extends State<Viewsocial> {
             Container(
               padding: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [
-                      Colors.orange.shade900,
-                      Colors.orange.shade900,
-                    ],
-                  ),
+                  color: Colors.white.withOpacity(0.1),
                   borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30))),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15))),
               child: Column(
                 children: <Widget>[
                   if (typepub == "image")
@@ -135,140 +128,138 @@ class _ViewsocialState extends State<Viewsocial> {
                 ],
               ),
             ),
-            Expanded(
-                child: Container(
-              margin: const EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      textpub,
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                      textAlign: TextAlign.justify,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      'Commentaire',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    StreamBuilder(
-                      stream: streamcomment,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        int length = snapshot.data!.docs.length;
-                        List comment = snapshot.data!.docs;
-                        return (comment.isEmpty)
-                            ? EmptyWidget(
-                                hideBackgroundAnimation: true,
-                                image: null,
-                                packageImage: PackageImage.Image_1,
-                                title: 'Aucun commentaire',
-                                subTitle: 'Soyez le premier a commenter',
-                                titleTextStyle: TextStyle(
-                                  fontSize: 22,
-                                  color: Color(0xff9da9c7),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                subtitleTextStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xffabb8d6),
-                                ),
-                              )
-                            : ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: length,
-                                itemBuilder: (BuildContext, index) {
-                                  return Column(
-                                    children: <Widget>[
-                                      for (var users in alluser)
-                                        if (users["iduser"] ==
-                                            comment[index]['iduser'])
-                                          Row(
-                                            // mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: <Widget>[
-                                              CircleAvatar(
-                                                radius: 30,
-                                                backgroundImage:
-                                                    CachedNetworkImageProvider(
-                                                        users['avatar']),
-                                              ),
-                                              BubbleSpecialThree(
-                                                text:
-                                                    "${users["nom"]} \n ${comment[index]['message']} ",
-                                                color: Color(0xFFE8E8EE),
-                                                tail: true,
-                                                isSender: false,
-                                              )
-                                            ],
-                                          ),
-                                      const SizedBox(
-                                        height: 10,
-                                      )
-                                    ],
-                                  );
-                                });
-                      },
-                    )
-                  ],
-                ),
-              ),
-            )),
             Container(
-              margin: const EdgeInsets.only(left: 10, right: 10, bottom: 2),
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: const BorderRadius.all(Radius.circular(50))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(avataruser),
+                  Text(
+                    textpub,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.justify,
                   ),
                   const SizedBox(
-                    width: 5,
+                    height: 10,
                   ),
-                  Expanded(
-                      child: TextFormField(
-                    style: const TextStyle(color: Colors.white),
-                    controller: commentcontroller,
-                    decoration: const InputDecoration(
-                      fillColor: Colors.transparent,
-                      filled: false,
-                      contentPadding: EdgeInsets.all(0),
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: InputBorder.none,
-                    ),
-                  )),
+                  const Text(
+                    'Commentaire',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
                   const SizedBox(
-                    width: 5,
+                    height: 10,
                   ),
-                  IconButton(
-                      onPressed: () {
-                        sendcomment();
-                      },
-                      icon: const Icon(Iconsax.send_1,
-                          color: Colors.white, size: 30)),
+                  StreamBuilder(
+                    stream: streamcomment,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      int length = snapshot.data!.docs.length;
+                      List comment = snapshot.data!.docs;
+                      return (comment.isEmpty)
+                          ? EmptyWidget(
+                              hideBackgroundAnimation: true,
+                              image: "assets/inbox.png",
+                              packageImage: null,
+                              title: 'Aucun commentaire',
+                              subTitle: 'Soyez le premier a commenter',
+                              titleTextStyle: TextStyle(
+                                fontSize: 22,
+                                color: Color(0xff9da9c7),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              subtitleTextStyle: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffabb8d6),
+                              ),
+                            )
+                          : ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: length,
+                              itemBuilder: (BuildContext, index) {
+                                return Column(
+                                  children: <Widget>[
+                                    for (var users in alluser)
+                                      if (users["iduser"] ==
+                                          comment[index]['iduser'])
+                                        Row(
+                                          // mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            CircleAvatar(
+                                              radius: 30,
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                      users['avatar']),
+                                            ),
+                                            BubbleSpecialThree(
+                                              text:
+                                                  "${users["nom"]} \n ${comment[index]['message']} ",
+                                              color: Color(0xFFE8E8EE),
+                                              tail: true,
+                                              isSender: false,
+                                            )
+                                          ],
+                                        ),
+                                    const SizedBox(
+                                      height: 10,
+                                    )
+                                  ],
+                                );
+                              });
+                    },
+                  )
                 ],
               ),
-            )
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(left: 10, right: 10, bottom: 1),
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(50))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(avataruser),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+                child: TextFormField(
+              style: const TextStyle(fontSize: 18),
+              controller: commentcontroller,
+              decoration: const InputDecoration(
+                fillColor: Colors.transparent,
+                filled: false,
+                contentPadding: EdgeInsets.all(0),
+                labelStyle: TextStyle(color: Colors.white),
+                border: InputBorder.none,
+              ),
+            )),
+            const SizedBox(
+              width: 5,
+            ),
+            IconButton(
+                onPressed: () {
+                  sendcomment();
+                },
+                icon: const Icon(Iconsax.send_1, size: 30)),
           ],
         ),
       ),

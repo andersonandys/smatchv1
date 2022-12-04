@@ -7,9 +7,7 @@ class TopTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NftCard(
-      imagePath: 'assets/nft/masque.png',
-    );
+    return NftCard();
     ;
   }
 }

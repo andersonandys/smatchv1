@@ -135,8 +135,8 @@ class _SettingsvideoState extends State<Settingsvideo> {
                     return (datavideo.isEmpty)
                         ? EmptyWidget(
                             hideBackgroundAnimation: true,
-                            image: null,
-                            packageImage: PackageImage.Image_1,
+                            image: "assets/inbox.png",
+                            packageImage: null,
                             title: 'Aucun contenu',
                             subTitle: "Aucun contenu publier pour l'intant",
                             titleTextStyle: const TextStyle(
@@ -145,7 +145,7 @@ class _SettingsvideoState extends State<Settingsvideo> {
                               fontWeight: FontWeight.w500,
                             ),
                             subtitleTextStyle: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 18,
                               color: Color(0xffabb8d6),
                             ),
                           )

@@ -4,8 +4,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 class Viewnft extends StatefulWidget {
-  const Viewnft({Key? key}) : super(key: key);
-
+  Viewnft({Key? key, required this.pathasset}) : super(key: key);
+  String pathasset;
   @override
   _ViewnftState createState() => _ViewnftState();
 }
@@ -25,7 +25,7 @@ class _ViewnftState extends State<Viewnft> {
             height: 5,
             width: 100,
             decoration: const BoxDecoration(
-                color: Colors.black,
+                color: Colors.red,
                 borderRadius: BorderRadius.all(Radius.circular(100))),
           ),
           const SizedBox(
@@ -75,8 +75,28 @@ class _ViewnftState extends State<Viewnft> {
                     topRight: Radius.circular(20))),
             child: Stack(
               children: [
+                Container(
+                  height: 400,
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
+                    child: Image.asset(
+                      widget.pathasset,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 20, bottom: 5),
                   child: Positioned(
                       bottom: 100,
                       child: Align(

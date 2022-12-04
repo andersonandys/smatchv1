@@ -161,7 +161,7 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.poppinsTextTheme(
             Theme.of(context).textTheme,
           )),
-      home: (user != null) ? Menuhome() : OnBoarding(),
+      home: (user != null) ? Menuhome() : OnboardingExample(),
       navigatorKey: navigatorKey,
       builder: EasyLoading.init(),
     );

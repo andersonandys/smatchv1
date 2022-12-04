@@ -266,17 +266,28 @@ class _HomeState extends State<Home> {
   }
 
   gosalon(typesalon, ishost, idsalon) {
+    print("salon");
     if (typesalon == "audio") {
-      Get.to(() => Call(
-            username: nomusers,
-            idlive: idsalon,
-            isHost: ishost,
-          ));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Call(
+                  username: nomusers,
+                  idlive: idsalon,
+                  isHost: ishost,
+                )),
+      );
     }
     if (typesalon == "conference") {
-      VideoConferencePage(
-        conferenceID: idsalon,
-        username: nomusers,
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VideoConferencePage(
+                  conferenceID: idsalon,
+                  username: nomusers,
+                  avataruser: null,
+                  nombranche: null,
+                )),
       );
     }
   }
@@ -609,18 +620,32 @@ class _creatsalonState extends State<creatsalon> {
           .doc(value.id)
           .update({"idsalon": value.id});
       if (typesalon == "audio") {
-        Get.to(() => Call(
-              idlive: value.id,
-              username: widget.nomuser,
-              isHost: true,
-            ));
-        Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Call(
+                    idlive: value.id,
+                    username: widget.nomuser,
+                    isHost: true,
+                  )),
+        );
       }
       if (typesalon == "conference") {
-        Get.to(() => VideoConferencePage(
-              conferenceID: value.id,
-              username: widget.nomuser,
-            ));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => VideoConferencePage(
+                    conferenceID: value.id,
+                    username: widget.nomuser,
+                    avataruser: null,
+                    nombranche: null,
+                  )),
+        );
+
+        // Get.to(() => VideoConferencePage(
+        //       conferenceID: value.id,
+        //       username: widget.nomuser,
+        //     ));
       }
     });
     setState(() {

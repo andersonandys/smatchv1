@@ -31,6 +31,7 @@ class _VideofeedState extends State<Videofeed> {
   final Stream<QuerySnapshot> streamvideopub = FirebaseFirestore.instance
       .collection("publication")
       .where("idbranche", isEqualTo: Get.arguments[0]["idbranche"])
+      .orderBy("range", descending: true)
       .snapshots();
   final PageController pageController = PageController(initialPage: 1);
   int pagenumber = 1;
@@ -75,8 +76,8 @@ class _VideofeedState extends State<Videofeed> {
                     return (videofeeds.isEmpty)
                         ? EmptyWidget(
                             hideBackgroundAnimation: true,
-                            image: null,
-                            packageImage: PackageImage.Image_1,
+                            image: "assets/inbox.png",
+                            packageImage: null,
                             title: 'Aucune video',
                             subTitle: 'Aucune video disponible',
                             titleTextStyle: const TextStyle(
@@ -85,7 +86,7 @@ class _VideofeedState extends State<Videofeed> {
                               fontWeight: FontWeight.w500,
                             ),
                             subtitleTextStyle: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 18,
                               color: Color(0xffabb8d6),
                             ),
                           )
@@ -659,8 +660,8 @@ class _CommentvideofeedState extends State<Commentvideofeed> {
                 return (comment.isEmpty)
                     ? EmptyWidget(
                         hideBackgroundAnimation: true,
-                        image: null,
-                        packageImage: PackageImage.Image_1,
+                        image: "assets/inbox.png",
+                        packageImage: null,
                         title: 'Aucun commentaire',
                         subTitle: 'Soyez le premier a commenter',
                         titleTextStyle: const TextStyle(
@@ -669,7 +670,7 @@ class _CommentvideofeedState extends State<Commentvideofeed> {
                           fontWeight: FontWeight.w500,
                         ),
                         subtitleTextStyle: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 18,
                           color: Color(0xffabb8d6),
                         ),
                       )
@@ -913,8 +914,8 @@ class _MypubState extends State<Mypub> {
         List videofeeds = snapshot.data!.docs;
         return (videofeeds.isEmpty)
             ? EmptyWidget(
-                image: null,
-                packageImage: PackageImage.Image_1,
+                image: "assets/inbox.png",
+                packageImage: null,
                 title: 'Pas de video',
                 subTitle: "Vous n'avez pas encore publie de video",
                 hideBackgroundAnimation: true,
@@ -924,7 +925,7 @@ class _MypubState extends State<Mypub> {
                   fontWeight: FontWeight.w500,
                 ),
                 subtitleTextStyle: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 18,
                   color: Color(0xffabb8d6),
                 ),
               )
