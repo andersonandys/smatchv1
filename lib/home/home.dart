@@ -2167,11 +2167,20 @@ class _homeState extends State<home> {
                                   },
                                   child: Obx(() => CircleAvatar(
                                         radius: 40,
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.2),
                                         backgroundImage: (requ.affiche.isEmpty)
                                             ? null
                                             : NetworkImage(
                                                 requ.affiche.value,
                                               ),
+                                        child: (requ.affiche.isEmpty)
+                                            ? const Icon(
+                                                Iconsax.camera,
+                                                color: Colors.white,
+                                                size: 30,
+                                              )
+                                            : null,
                                       )),
                                 ),
                                 const SizedBox(

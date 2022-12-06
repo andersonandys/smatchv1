@@ -221,7 +221,7 @@ class _TransaltemessageState extends State<Transaltemessage> {
             height: 20,
           ),
           Text(
-            transaltetitle,
+            (transaltetitle.isEmpty) ? "Traduction" : transaltetitle,
             style: const TextStyle(color: Colors.white70, fontSize: 18),
           ),
           const SizedBox(

@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
                     child: Container(
                       color: const Color(0xfff5f5f5),
                       child: TextFormField(
-                        // controller: _nombrancheController,
+                        controller: mailcontroller,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Iconsax.user),
                           fillColor: Colors.white.withOpacity(0.2),
@@ -145,7 +145,7 @@ class _LoginState extends State<Login> {
                     color: Color(0xfff5f5f5),
                     child: TextFormField(
                       obscureText: view,
-                      // controller: _nombrancheController,
+                      controller: mdpcontroller,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(IconlyBold.password),
                         suffixIcon: IconButton(

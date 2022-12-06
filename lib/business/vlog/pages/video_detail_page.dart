@@ -113,7 +113,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       backgroundColor: Colors.black,
       appBar: PreferredSize(
           preferredSize:
-              const Size.fromHeight(200.0), // here the desired height
+              const Size.fromHeight(250.0), // here the desired height
           child: SafeArea(
             child: CustomVideoPlayer(
                 customVideoPlayerController: _customVideoPlayerController),
@@ -219,7 +219,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                               "Description",
                               style: TextStyle(
                                   color: Colors.white.withOpacity(0.9),
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w300,
                                   fontSize: 17),
                             ),
                             const SizedBox(
@@ -228,7 +228,8 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                             Text(
                               description,
                               style: TextStyle(
-                                  height: 1.4,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white.withOpacity(0.9)),
                             ),
                             const SizedBox(
@@ -238,7 +239,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                               "Commentaire",
                               style: TextStyle(
                                   color: Colors.white.withOpacity(0.9),
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   fontSize: 17),
                             ),
                             const SizedBox(

@@ -18,6 +18,7 @@ import 'package:smatch/menu/menuwidget.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:smatch/wallet/crypto/get_started_screen.dart';
+import 'package:smatch/wallet/cynetpay/payement.dart';
 import 'dart:convert';
 
 import 'package:smatch/wallet/info.dart';
@@ -111,7 +112,7 @@ class _WalletuserState extends State<Walletuser> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(() => GetStartedScreen());
+                Get.to(() => Payement());
               },
               icon: Icon(Iconsax.buy_crypto, size: 30, color: Colors.white))
         ],
@@ -806,7 +807,7 @@ class _WalletuserState extends State<Walletuser> {
       "nom": "Wallet",
       "range": DateTime.now().millisecondsSinceEpoch,
       "idrechargement": ""
-    }).then((value) {
+    }).then((value) async {
       FirebaseFirestore.instance
           .collection("payment")
           .doc(value.id)
@@ -824,16 +825,16 @@ class _WalletuserState extends State<Walletuser> {
       setState(() {
         load = false;
       });
-      CinetPayCheckout(
+      await Get.to(() => CinetPayCheckout(
           title: 'YOUR_TITLE',
-          configData: const <String, dynamic>{
+          configData: <String, dynamic>{
             'apikey': '12845785286114ff4e94f6e9.88416188',
             'site_id': 608304,
             'notify_url': 'https://smatchs.000webhostapp.com/'
           },
           paymentData: <String, dynamic>{
             'transaction_id': value.id,
-            'amount': 100,
+            'amount': 200,
             'currency': 'XOF',
             'channels': 'ALL',
             'description': 'YOUR_DESCRIPTION'
@@ -843,7 +844,7 @@ class _WalletuserState extends State<Walletuser> {
           },
           onError: (error) {
             print(error);
-          });
+          }));
       // payWithAdjeminPay(myOrders, value.id);
     });
   }

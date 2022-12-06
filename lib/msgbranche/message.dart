@@ -452,7 +452,9 @@ class _MessagebrancheState extends State<Messagebranche> {
                         height: 20,
                       ),
                       Text(
-                        transaltetitle,
+                        (transaltetitle.isEmpty)
+                            ? "Traduction"
+                            : transaltetitle,
                         style: const TextStyle(
                             color: Colors.white70, fontSize: 18),
                       ),

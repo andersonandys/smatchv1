@@ -157,11 +157,11 @@ class _PublicationvlogState extends State<Publicationvlog> {
             ),
             (viewprogressbar)
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SizedBox(
                         height: 15.0,
-                        width: MediaQuery.of(context).size.width / 1.3,
+                        width: MediaQuery.of(context).size.width / 1.5,
                         child: LiquidLinearProgressIndicator(
                           value: progress / 100,
                           borderRadius: 50,
@@ -443,11 +443,11 @@ class _PublicationvlogState extends State<Publicationvlog> {
           .collection("noeud")
           .doc(idvlog)
           .update({"nbrevideo": FieldValue.increment(1)});
-      setState(() {
-        categorie = null;
-        video = "";
-        image1 = "";
-      });
+      // setState(() {
+      //   categorie = null;
+      //   video = "";
+      //   image1 = "";
+      // });
     }
   }
 

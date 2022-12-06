@@ -224,11 +224,11 @@ class _publicationshopState extends State<publicationshop> {
             ),
             (viewprogressbar)
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SizedBox(
                         height: 15.0,
-                        width: MediaQuery.of(context).size.width / 1.3,
+                        width: MediaQuery.of(context).size.width / 1.5,
                         // decoration: const BoxDecoration(
                         //     borderRadius: BorderRadius.all(Radius.circular(100))),
                         child: LiquidLinearProgressIndicator(

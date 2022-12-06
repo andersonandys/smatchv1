@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -66,7 +67,7 @@ class _MenupageState extends State<Menupage> {
                       width: 10,
                     ),
                     CircleAvatar(
-                      backgroundImage: NetworkImage(avataruser),
+                      backgroundImage: CachedNetworkImageProvider(avataruser),
                       radius: 35,
                     ),
                     const SizedBox(
@@ -150,14 +151,14 @@ class _MenupageState extends State<Menupage> {
         minLeadingWidth: 20,
         leading: Icon(
           item.icone,
-          size: 25,
+          size: 30,
         ),
         title: Text(
           item.title,
           style: GoogleFonts.poppins(
             fontSize: 17,
             // color: Color(0xff3A4276),
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w400,
           ),
         ),
         onTap: () => widget.onselectedItem(item),
@@ -180,10 +181,10 @@ class _MenupageState extends State<Menupage> {
 }
 
 class MenuItems {
-  static const home = Menuitem('Home', Iconsax.home);
+  static const home = Menuitem('Accueil', Iconsax.home);
   static const djolo = Menuitem('Djolo (NFT)', Ionicons.construct_outline);
   static const discovery = Menuitem(
-    'Discovery',
+    'Dècouverte',
     IconlyLight.discovery,
   );
   static const noeud = Menuitem('Mes Noeuds', Ionicons.git_merge_outline);
