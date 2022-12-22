@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -34,6 +35,8 @@ import 'package:smatch/home/stackuser.dart';
 import 'package:smatch/home/stories.dart';
 import 'package:smatch/home/tabsrequette.dart';
 import 'package:smatch/menu/menuwidget.dart';
+import 'package:smatch/message/message.dart';
+import 'package:smatch/msgbranche/composer.dart';
 import 'package:smatch/msgbranche/message.dart';
 import 'package:smatch/newuser.dart';
 import 'package:smatch/noeud/creatnoeud.dart';
@@ -372,46 +375,73 @@ class _homeState extends State<home> {
     return WillPopScope(
       child: Scaffold(
         backgroundColor: Colors.black.withBlue(25),
-        appBar: AppBar(
-          backgroundColor: Colors.black.withBlue(25),
-          title: Text(
-            'Smatch',
-            style: GoogleFonts.poppins(fontSize: 30),
-          ),
-          leading: const Menuwidget(),
-          elevation: 0,
-          centerTitle: true,
-          actions: [
-            const SizedBox(
-              width: 10,
-            ),
-            // Row(
-            //   children: <Widget>[
-            //     IconButton(
-            //         padding: const EdgeInsets.all(6),
-            //         onPressed: () {
-            //           Get.to(() => const Notificationhome());
-            //         },
-            //         icon: const Icon(Iconsax.notification)),
-            //     (notification != 0)
-            //         ? Badge(
-            //             badgeColor: Colors.redAccent,
-            //             badgeContent: Text(
-            //               "$notification",
-            //               style: const TextStyle(color: Colors.white),
-            //             ),
-            //           )
-            //         : const SizedBox()
-            //   ],
-            // ),
-            const SizedBox(
-              width: 10,
-            ),
-            const SizedBox(
-              width: 10,
-            )
-          ],
-        ),
+        appBar: PreferredSize(
+            preferredSize: (sendrequ.nomnoeuds.isNotEmpty)
+                ? const Size.fromHeight(110.0)
+                : const Size.fromHeight(60),
+            child: SafeArea(
+                child: Column(
+              children: <Widget>[
+                ListTile(
+                  contentPadding: const EdgeInsets.only(left: 5, right: 5),
+                  leading: IconButton(
+                      onPressed: () => ZoomDrawer.of(context)!.toggle(),
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                  title: const Center(
+                    child: Text(
+                      "SMATCH",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  trailing: IconButton(
+                      onPressed: () {
+                        Get.to(() => const Message());
+                      },
+                      icon: const Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                ),
+                if (sendrequ.nomnoeuds.isNotEmpty)
+                  Padding(
+                      padding:
+                          const EdgeInsets.only(top: 2, left: 10, right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              sendrequ.nomnoeuds.value,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                            ),
+                          ),
+                          Obx(() => (sendrequ.isadmins.isTrue)
+                              ? IconButton(
+                                  onPressed: () {
+                                    optionoeud();
+                                  },
+                                  icon: const Icon(
+                                    Iconsax.more,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ))
+                              : Container()),
+                        ],
+                      )),
+              ],
+            ))),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -884,55 +914,58 @@ class _homeState extends State<home> {
             ),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        sendrequ.nomnoeuds.value,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                      ),
-                    ),
-                    Obx(() => (sendrequ.isadmins.isTrue)
-                        ? IconButton(
-                            onPressed: () {
-                              optionoeud();
-                            },
-                            icon: const Icon(
-                              Iconsax.more,
-                              size: 30,
-                              color: Colors.white,
-                            ))
-                        : Container()),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
                 // Stories(),
                 const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
                     height: 50,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Padding(
+                    child: Center(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: ActionChip(
+                                onPressed: () {
+                                  setState(() {
+                                    print(sendrequ.idnoeuds.value);
+                                    _brancheStream = FirebaseFirestore.instance
+                                        .collection('branche')
+                                        .where("id_noeud",
+                                            isEqualTo: sendrequ.idnoeuds.value)
+                                        .where("typebranche",
+                                            isEqualTo: "inbox")
+                                        .orderBy("range", descending: true)
+                                        .snapshots();
+                                  });
+                                },
+                                backgroundColor: Colors.black.withBlue(20),
+                                disabledColor: Colors.black.withBlue(20),
+                                padding: const EdgeInsets.all(10),
+                                labelStyle:
+                                    const TextStyle(color: Colors.white),
+                                label: const Text(
+                                  'Inbox',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                avatar: const Icon(
+                                  Iconsax.message,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Padding(
                             padding: const EdgeInsets.all(5),
                             child: ActionChip(
                               onPressed: () {
                                 setState(() {
-                                  print(sendrequ.idnoeuds.value);
                                   _brancheStream = FirebaseFirestore.instance
                                       .collection('branche')
                                       .where("id_noeud",
                                           isEqualTo: sendrequ.idnoeuds.value)
-                                      .where("typebranche", isEqualTo: "inbox")
+                                      .where("typebranche", isEqualTo: "social")
                                       .orderBy("range", descending: true)
                                       .snapshots();
                                 });
@@ -942,526 +975,55 @@ class _homeState extends State<home> {
                               padding: const EdgeInsets.all(10),
                               labelStyle: const TextStyle(color: Colors.white),
                               label: const Text(
-                                'Inbox',
+                                'Social',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
                               avatar: const Icon(
-                                Iconsax.message,
+                                Iconsax.activity,
                                 color: Colors.white,
                               ),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: ActionChip(
-                            onPressed: () {
-                              setState(() {
-                                _brancheStream = FirebaseFirestore.instance
-                                    .collection('branche')
-                                    .where("id_noeud",
-                                        isEqualTo: sendrequ.idnoeuds.value)
-                                    .where("typebranche", isEqualTo: "social")
-                                    .orderBy("range", descending: true)
-                                    .snapshots();
-                              });
-                            },
-                            backgroundColor: Colors.black.withBlue(20),
-                            disabledColor: Colors.black.withBlue(20),
-                            padding: const EdgeInsets.all(10),
-                            labelStyle: const TextStyle(color: Colors.white),
-                            label: const Text(
-                              'Social',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            avatar: const Icon(
-                              Iconsax.activity,
-                              color: Colors.white,
                             ),
                           ),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: ActionChip(
-                              onPressed: () {
-                                setState(() {
-                                  _brancheStream = FirebaseFirestore.instance
-                                      .collection('branche')
-                                      .where("id_noeud",
-                                          isEqualTo: sendrequ.idnoeuds.value)
-                                      .where("typebranche", isEqualTo: "video")
-                                      .orderBy("range", descending: true)
-                                      .snapshots();
-                                });
-                              },
-                              backgroundColor: Colors.black.withBlue(20),
-                              disabledColor: Colors.black.withBlue(20),
-                              padding: const EdgeInsets.all(10),
-                              labelStyle: TextStyle(color: Colors.white),
-                              label: const Text(
-                                'Video',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              avatar: const Icon(
-                                Iconsax.video,
-                                color: Colors.white,
-                              ),
-                            ))
-                      ],
+                          Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: ActionChip(
+                                onPressed: () {
+                                  setState(() {
+                                    _brancheStream = FirebaseFirestore.instance
+                                        .collection('branche')
+                                        .where("id_noeud",
+                                            isEqualTo: sendrequ.idnoeuds.value)
+                                        .where("typebranche",
+                                            isEqualTo: "video")
+                                        .orderBy("range", descending: true)
+                                        .snapshots();
+                                  });
+                                },
+                                backgroundColor: Colors.black.withBlue(20),
+                                disabledColor: Colors.black.withBlue(20),
+                                padding: const EdgeInsets.all(10),
+                                labelStyle: TextStyle(color: Colors.white),
+                                label: const Text(
+                                  'Video',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                avatar: const Icon(
+                                  Iconsax.video,
+                                  color: Colors.white,
+                                ),
+                              ))
+                        ],
+                      ),
                     )),
-
                 const SizedBox(
                   height: 10,
                 ),
                 Expanded(
-                  child: StreamBuilder(
-                    stream: _brancheStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                FirebaseFirestore.instance
-                                    .collection('userbranche')
-                                    .where('iduser', isEqualTo: userid)
-                                    .where("idbranche",
-                                        isEqualTo:
-                                            snapshot.data!.docs[index].id)
-                                    .get()
-                                    .then((value) {
-                                  if (value.docs.isEmpty) {
-                                    if (snapshot.data!.docs[index]["offre"] ==
-                                        "gratuit") {
-                                      if (snapshot.data!.docs[index]
-                                              ["statut"] ==
-                                          "public") {
-                                        gobranche(
-                                            snapshot.data!.docs[index]
-                                                ["description"],
-                                            snapshot.data!.docs[index].id,
-                                            snapshot.data!.docs[index]["nom"],
-                                            snapshot.data!.docs[index]
-                                                ["ismessage"],
-                                            snapshot.data!.docs[index]
-                                                ["isfile"],
-                                            snapshot.data!.docs[index]
-                                                ["isimage"],
-                                            snapshot.data!.docs[index]
-                                                ["ismention"],
-                                            snapshot.data!.docs[index]
-                                                ["ismusic"],
-                                            snapshot.data!.docs[index]["isnv"],
-                                            snapshot.data!.docs[index]
-                                                ["isreponse"],
-                                            snapshot.data!.docs[index]
-                                                ["isvideo"]);
-                                      } else {
-                                        // envoyer une demande d'integration
-                                        sendinvitation(
-                                            snapshot.data!.docs[index].id,
-                                            snapshot.data!.docs[index]["nom"]);
-                                      }
-                                    } else if (snapshot.data!.docs[index]
-                                            ["offre"] ==
-                                        "abonnement") {
-                                      byabonnement(
-                                          snapshot.data!.docs[index]["nom"],
-                                          snapshot.data!.docs[index]["prix"],
-                                          snapshot.data!.docs[index].id,
-                                          snapshot.data!.docs[index]["offre"]);
-                                    }
-                                  } else {
-                                    FirebaseFirestore.instance
-                                        .collection('userbranche')
-                                        .where('iduser', isEqualTo: userid)
-                                        .where("idbranche",
-                                            isEqualTo:
-                                                snapshot.data!.docs[index].id)
-                                        .get()
-                                        .then((value) {
-                                      for (var element in value.docs) {
-                                        if (snapshot.data!.docs[index]
-                                                ["typebranche"] ==
-                                            "inbox") {
-                                          Get.toNamed("/messagebrache/",
-                                              arguments: [
-                                                {
-                                                  "idbranche": snapshot
-                                                      .data!.docs[index].id
-                                                },
-                                                {
-                                                  "nombranche": snapshot
-                                                      .data!.docs[index]['nom']
-                                                },
-                                                {
-                                                  "idcreat": snapshot.data!
-                                                      .docs[index]['idcreat']
-                                                },
-                                                {"admin": element['statut']},
-                                                {"token": token}
-                                              ]);
-                                        } else if (snapshot.data!.docs[index]
-                                                ["typebranche"] ==
-                                            "social") {
-                                          print(snapshot.data!.docs[index].id);
-                                          Get.toNamed("/social/", arguments: [
-                                            {
-                                              "idbranche":
-                                                  snapshot.data!.docs[index].id
-                                            },
-                                            {
-                                              "nombranche": snapshot
-                                                  .data!.docs[index]['nom']
-                                            },
-                                            {
-                                              "idcreat": snapshot
-                                                  .data!.docs[index]['idcreat']
-                                            },
-                                            {"admin": element['statut']},
-                                            {
-                                              "affiche": snapshot
-                                                  .data!.docs[index]['affiche']
-                                            },
-                                            {
-                                              "publi": snapshot
-                                                  .data!.docs[index]['public']
-                                            },
-                                          ]);
-                                        } else if (snapshot.data!.docs[index]
-                                                ["typebranche"] ==
-                                            "video") {
-                                          print(snapshot.data!.docs[index]
-                                              ['pubic']);
-                                          Get.toNamed("/videofeed/",
-                                              arguments: [
-                                                {
-                                                  "idbranche": snapshot
-                                                      .data!.docs[index].id
-                                                },
-                                                {
-                                                  "nombranche": snapshot
-                                                      .data!.docs[index]['nom']
-                                                },
-                                                {
-                                                  "idcreat": snapshot.data!
-                                                      .docs[index]['idcreat']
-                                                },
-                                                {"admin": element['statut']},
-                                                {"token": token},
-                                                {
-                                                  "affiche": snapshot.data!
-                                                      .docs[index]['affiche']
-                                                },
-                                                {
-                                                  "publi": snapshot.data!
-                                                      .docs[index]['pubic']
-                                                },
-                                              ]);
-                                        }
-                                      }
-                                    });
-
-                                    FirebaseFirestore.instance
-                                        .collection('userbranche')
-                                        .where("idbranche",
-                                            isEqualTo:
-                                                snapshot.data!.docs[index].id)
-                                        .where("iduser", isEqualTo: userid)
-                                        .get()
-                                        .then((QuerySnapshot querySnapshot) {
-                                      for (var doc in querySnapshot.docs) {
-                                        userbranche
-                                            .doc(doc.id)
-                                            .update({"nbremsg": 0});
-                                      }
-                                    });
-                                  }
-                                });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  color: Colors.white.withOpacity(0.2),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    if (snapshot.data!.docs[index]["affiche"] !=
-                                        "")
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                        child: Container(
-                                          height: 200,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          color: Colors.white,
-                                          child: CachedNetworkImage(
-                                            imageUrl: snapshot.data!.docs[index]
-                                                ["affiche"],
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Flexible(
-                                                child: Text(
-                                              "@ ${snapshot.data!.docs[index]["nom"]}",
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
-                                            )),
-                                            (snapshot.data!.docs[index]
-                                                            ["statut"] ==
-                                                        "public" &&
-                                                    snapshot.data!.docs[index]
-                                                            ["offre"] ==
-                                                        "gratuit")
-                                                ? const Icon(
-                                                    IconlyLight.unlock,
-                                                    size: 30,
-                                                    color: Colors.white,
-                                                  )
-                                                : const Icon(
-                                                    IconlyLight.lock,
-                                                    size: 30,
-                                                    color: Colors.white,
-                                                  ),
-                                          ],
-                                        )),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: DetectableText(
-                                        trimLength: 150,
-                                        trimExpandedText: "montrer moins",
-                                        trimCollapsedText: "montrer plus",
-                                        text: snapshot.data!.docs[index]
-                                            ["description"],
-                                        detectionRegExp: RegExp(
-                                          "(?!\\n)(?:^|\\s)([#@]([$detectionContentLetters]+))|$urlRegexContent",
-                                          multiLine: true,
-                                        ),
-                                        detectedStyle: const TextStyle(
-                                            color: Colors.black),
-                                        basicStyle: const TextStyle(
-                                            color: Colors.white),
-                                        onTap: (tappedText) {
-                                          Get.toNamed("/checklien", arguments: [
-                                            {"url": tappedText}
-                                          ]);
-                                        },
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Stackuser(
-                                          idbranche:
-                                              snapshot.data!.docs[index].id),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Chip(
-                                                    backgroundColor: Colors
-                                                        .black
-                                                        .withBlue(20),
-                                                    label: Text(
-                                                      "${snapshot.data!.docs[index]["nbreuser"]}",
-                                                      style: const TextStyle(
-                                                          fontSize: 20,
-                                                          color: Colors.white),
-                                                    ),
-                                                    avatar: const Icon(
-                                                      Iconsax.user,
-                                                      size: 28,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Obx(() => (sendrequ.isadmins
-                                                              .isTrue &&
-                                                          snapshot.data!.docs[
-                                                                      index]
-                                                                  ["statut"] ==
-                                                              "prive")
-                                                      ? Chip(
-                                                          backgroundColor:
-                                                              Colors.black
-                                                                  .withBlue(20),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10),
-                                                          avatar: const Icon(
-                                                            IconlyLight
-                                                                .activity,
-                                                            color: Colors.white,
-                                                          ),
-                                                          label: Text(
-                                                            "${snapshot.data!.docs[index]["invitation"]}",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 16),
-                                                          ))
-                                                      : const SizedBox())
-                                                ],
-                                              ),
-                                              if (snapshot.data!.docs[index]
-                                                      ["typebranche"] ==
-                                                  "video")
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.black
-                                                          .withBlue(20),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  50))),
-                                                  child: const Icon(
-                                                    Iconsax.video,
-                                                    size: 28,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              if (snapshot.data!.docs[index]
-                                                      ["typebranche"] ==
-                                                  "social")
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.black
-                                                          .withBlue(20),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  50))),
-                                                  child: const Icon(
-                                                    Iconsax.activity,
-                                                    size: 28,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              if (snapshot.data!.docs[index]
-                                                      ["typebranche"] ==
-                                                  "inbox")
-                                                StreamBuilder(
-                                                    stream: FirebaseFirestore
-                                                        .instance
-                                                        .collection(
-                                                            "userbranche")
-                                                        .where("iduser",
-                                                            isEqualTo: userid)
-                                                        .where("idbranche",
-                                                            isEqualTo: snapshot
-                                                                .data!
-                                                                .docs[index]
-                                                                .id)
-                                                        .snapshots(),
-                                                    builder: (BuildContext
-                                                            contex,
-                                                        AsyncSnapshot<
-                                                                QuerySnapshot>
-                                                            datanbreMessage) {
-                                                      if (!datanbreMessage
-                                                          .hasData) {
-                                                        return Container();
-                                                      }
-                                                      return (datanbreMessage
-                                                              .data!
-                                                              .docs
-                                                              .isEmpty)
-                                                          ? const Chip(
-                                                              label: Text(
-                                                                '0',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 20,
-                                                                ),
-                                                              ),
-                                                              avatar: Icon(
-                                                                Iconsax.message,
-                                                                size: 28,
-                                                              ),
-                                                            )
-                                                          : Chip(
-                                                              backgroundColor:
-                                                                  Colors.black
-                                                                      .withBlue(
-                                                                          20),
-                                                              label: Text(
-                                                                "${datanbreMessage.data!.docs.first["nbremsg"]}",
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                              avatar:
-                                                                  const Icon(
-                                                                Iconsax.message,
-                                                                size: 28,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            );
-                                                    }),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    },
-                  ),
+                  child: listbranches(),
                 )
               ],
             ));
@@ -2833,6 +2395,349 @@ class _homeState extends State<home> {
             );
           });
         });
+  }
+
+  Widget listbranches() {
+    return StreamBuilder(
+      stream: _brancheStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  FirebaseFirestore.instance
+                      .collection('userbranche')
+                      .where('iduser', isEqualTo: userid)
+                      .where("idbranche",
+                          isEqualTo: snapshot.data!.docs[index].id)
+                      .get()
+                      .then((value) {
+                    if (value.docs.isEmpty) {
+                      if (snapshot.data!.docs[index]["offre"] == "gratuit") {
+                        if (snapshot.data!.docs[index]["statut"] == "public") {
+                          gobranche(
+                              snapshot.data!.docs[index]["description"],
+                              snapshot.data!.docs[index].id,
+                              snapshot.data!.docs[index]["nom"],
+                              snapshot.data!.docs[index]["ismessage"],
+                              snapshot.data!.docs[index]["isfile"],
+                              snapshot.data!.docs[index]["isimage"],
+                              snapshot.data!.docs[index]["ismention"],
+                              snapshot.data!.docs[index]["ismusic"],
+                              snapshot.data!.docs[index]["isnv"],
+                              snapshot.data!.docs[index]["isreponse"],
+                              snapshot.data!.docs[index]["isvideo"]);
+                        } else {
+                          // envoyer une demande d'integration
+                          sendinvitation(snapshot.data!.docs[index].id,
+                              snapshot.data!.docs[index]["nom"]);
+                        }
+                      } else if (snapshot.data!.docs[index]["offre"] ==
+                          "abonnement") {
+                        byabonnement(
+                            snapshot.data!.docs[index]["nom"],
+                            snapshot.data!.docs[index]["prix"],
+                            snapshot.data!.docs[index].id,
+                            snapshot.data!.docs[index]["offre"]);
+                      }
+                    } else {
+                      FirebaseFirestore.instance
+                          .collection('userbranche')
+                          .where('iduser', isEqualTo: userid)
+                          .where("idbranche",
+                              isEqualTo: snapshot.data!.docs[index].id)
+                          .get()
+                          .then((value) {
+                        for (var element in value.docs) {
+                          if (snapshot.data!.docs[index]["typebranche"] ==
+                              "inbox") {
+                            Get.toNamed("/messagebrache/", arguments: [
+                              {"idbranche": snapshot.data!.docs[index].id},
+                              {"nombranche": snapshot.data!.docs[index]['nom']},
+                              {
+                                "idcreat": snapshot.data!.docs[index]['idcreat']
+                              },
+                              {"admin": element['statut']},
+                              {"token": token}
+                            ]);
+                          } else if (snapshot.data!.docs[index]
+                                  ["typebranche"] ==
+                              "social") {
+                            print(snapshot.data!.docs[index].id);
+                            Get.toNamed("/social/", arguments: [
+                              {"idbranche": snapshot.data!.docs[index].id},
+                              {"nombranche": snapshot.data!.docs[index]['nom']},
+                              {
+                                "idcreat": snapshot.data!.docs[index]['idcreat']
+                              },
+                              {"admin": element['statut']},
+                              {
+                                "affiche": snapshot.data!.docs[index]['affiche']
+                              },
+                              {"publi": snapshot.data!.docs[index]['public']},
+                            ]);
+                          } else if (snapshot.data!.docs[index]
+                                  ["typebranche"] ==
+                              "video") {
+                            print(snapshot.data!.docs[index]['pubic']);
+                            Get.toNamed("/videofeed/", arguments: [
+                              {"idbranche": snapshot.data!.docs[index].id},
+                              {"nombranche": snapshot.data!.docs[index]['nom']},
+                              {
+                                "idcreat": snapshot.data!.docs[index]['idcreat']
+                              },
+                              {"admin": element['statut']},
+                              {"token": token},
+                              {
+                                "affiche": snapshot.data!.docs[index]['affiche']
+                              },
+                              {"publi": snapshot.data!.docs[index]['pubic']},
+                            ]);
+                          }
+                        }
+                      });
+
+                      FirebaseFirestore.instance
+                          .collection('userbranche')
+                          .where("idbranche",
+                              isEqualTo: snapshot.data!.docs[index].id)
+                          .where("iduser", isEqualTo: userid)
+                          .get()
+                          .then((QuerySnapshot querySnapshot) {
+                        for (var doc in querySnapshot.docs) {
+                          userbranche.doc(doc.id).update({"nbremsg": 0});
+                        }
+                      });
+                    }
+                  });
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (snapshot.data!.docs[index]["affiche"] != "")
+                        ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          child: Container(
+                            height: 200,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
+                            child: CachedNetworkImage(
+                              imageUrl: snapshot.data!.docs[index]["affiche"],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                  child: Text(
+                                "@ ${snapshot.data!.docs[index]["nom"]}",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              )),
+                              (snapshot.data!.docs[index]["statut"] ==
+                                          "public" &&
+                                      snapshot.data!.docs[index]["offre"] ==
+                                          "gratuit")
+                                  ? const Icon(
+                                      IconlyLight.unlock,
+                                      size: 30,
+                                      color: Colors.white,
+                                    )
+                                  : const Icon(
+                                      IconlyLight.lock,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                            ],
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: DetectableText(
+                          trimLength: 150,
+                          trimExpandedText: "montrer moins",
+                          trimCollapsedText: "montrer plus",
+                          text: snapshot.data!.docs[index]["description"],
+                          detectionRegExp: RegExp(
+                            "(?!\\n)(?:^|\\s)([#@]([$detectionContentLetters]+))|$urlRegexContent",
+                            multiLine: true,
+                          ),
+                          detectedStyle: const TextStyle(color: Colors.black),
+                          basicStyle: const TextStyle(color: Colors.white),
+                          onTap: (tappedText) {
+                            Get.toNamed("/checklien", arguments: [
+                              {"url": tappedText}
+                            ]);
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child:
+                            Stackuser(idbranche: snapshot.data!.docs[index].id),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Chip(
+                                      backgroundColor:
+                                          Colors.black.withBlue(20),
+                                      label: Text(
+                                        "${snapshot.data!.docs[index]["nbreuser"]}",
+                                        style: const TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                      avatar: const Icon(
+                                        Iconsax.user,
+                                        size: 28,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Obx(() => (sendrequ.isadmins.isTrue &&
+                                            snapshot.data!.docs[index]
+                                                    ["statut"] ==
+                                                "prive")
+                                        ? Chip(
+                                            backgroundColor:
+                                                Colors.black.withBlue(20),
+                                            padding: const EdgeInsets.all(10),
+                                            avatar: const Icon(
+                                              IconlyLight.activity,
+                                              color: Colors.white,
+                                            ),
+                                            label: Text(
+                                              "${snapshot.data!.docs[index]["invitation"]}",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16),
+                                            ))
+                                        : const SizedBox())
+                                  ],
+                                ),
+                                if (snapshot.data!.docs[index]["typebranche"] ==
+                                    "video")
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withBlue(20),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(50))),
+                                    child: const Icon(
+                                      Iconsax.video,
+                                      size: 28,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                if (snapshot.data!.docs[index]["typebranche"] ==
+                                    "social")
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withBlue(20),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(50))),
+                                    child: const Icon(
+                                      Iconsax.activity,
+                                      size: 28,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                if (snapshot.data!.docs[index]["typebranche"] ==
+                                    "inbox")
+                                  StreamBuilder(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("userbranche")
+                                          .where("iduser", isEqualTo: userid)
+                                          .where("idbranche",
+                                              isEqualTo:
+                                                  snapshot.data!.docs[index].id)
+                                          .snapshots(),
+                                      builder: (BuildContext contex,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              datanbreMessage) {
+                                        if (!datanbreMessage.hasData) {
+                                          return Container();
+                                        }
+                                        return (datanbreMessage
+                                                .data!.docs.isEmpty)
+                                            ? const Chip(
+                                                label: Text(
+                                                  '0',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                avatar: Icon(
+                                                  Iconsax.message,
+                                                  size: 28,
+                                                ),
+                                              )
+                                            : Chip(
+                                                backgroundColor:
+                                                    Colors.black.withBlue(20),
+                                                label: Text(
+                                                  "${datanbreMessage.data!.docs.first["nbremsg"]}",
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
+                                                avatar: const Icon(
+                                                  Iconsax.message,
+                                                  size: 28,
+                                                  color: Colors.white,
+                                                ),
+                                              );
+                                      }),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+    );
   }
 }
 

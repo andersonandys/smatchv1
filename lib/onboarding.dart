@@ -189,10 +189,11 @@ final pages = [
       title: "Smatch webserie",
       textColor: Colors.white,
       bgColor: Color(0xFFFDBFDD),
-      subtitle: ""),
+      subtitle:
+          "Vous êtes fan de websérie ? Découvrez et partager des vidéos de vos acteurs favoris avec votre entourage."),
   const PageData(
       icon: Icons.hdr_weak,
-      title: "Drag and\ndrop to move",
+      title: "SMATCH",
       bgColor: Color(0xFFFFFFFF),
       subtitle: ""),
 ];

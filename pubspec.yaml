@@ -130,8 +130,14 @@ dependencies:
   timeago: ^3.3.0
   concentric_transition: ^1.0.3
   cinetpay: ^1.0.5
-  zego_uikit_prebuilt_live_audio_room: ^1.0.4
-  zego_uikit_prebuilt_video_conference: ^1.1.8
+  zego_uikit_prebuilt_live_audio_room: ^1.0.5
+  zego_uikit_prebuilt_video_conference: ^1.1.9
+  chat_composer: ^1.0.3
+  flutter_parsed_text: ^2.2.1
+  wechat_assets_picker: ^8.2.0
+  flutter_isolate: ^2.0.4
+  flutter_list_view: ^1.1.21
+  percent_indicator: ^4.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

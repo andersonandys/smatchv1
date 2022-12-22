@@ -217,7 +217,7 @@ class _LoginState extends State<Login> {
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext) {
-                            return SingleChildScrollView(
+                            return const SingleChildScrollView(
                               child: Resetpassword(),
                             );
                           });
@@ -228,12 +228,12 @@ class _LoginState extends State<Login> {
                         'Mot de passe oublié ?',
                         textAlign: TextAlign.right,
                         style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold),
+                            fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -245,43 +245,16 @@ class _LoginState extends State<Login> {
                           });
                           signInWithFacebook();
                         },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withBlue(20),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(7))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      AssetImage("assets/facebook.png")),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Text(
-                                'Facebook',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 2,
-                              ),
-                              if (loadtype == 'fb')
-                                const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                            ],
-                          ),
-                        ),
+                        child: CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:
+                                const AssetImage("assets/facebook.png"),
+                            child: (loadtype == 'fb')
+                                ? const CircularProgressIndicator(
+                                    color: Colors.redAccent,
+                                  )
+                                : null),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -290,43 +263,15 @@ class _LoginState extends State<Login> {
                           });
                           signInWithGoogle();
                         },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withBlue(20),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(7))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      AssetImage("assets/goo.png")),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Text(
-                                'Google',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              if (loadtype == "goo")
-                                const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                            ],
-                          ),
-                        ),
+                        child: CircleAvatar(
+                            radius: 35,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: const AssetImage("assets/goo.png"),
+                            child: (loadtype == 'goo')
+                                ? const CircularProgressIndicator(
+                                    color: Colors.redAccent,
+                                  )
+                                : null),
                       )
                     ],
                   ),
@@ -348,9 +293,9 @@ class _LoginState extends State<Login> {
                             TextSpan(
                                 text: "Creer un compte",
                                 style: TextStyle(
-                                  color: Color(0xffff2d55),
-                                  fontSize: 16,
-                                ))
+                                    color: Color(0xffff2d55),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold))
                           ]),
                         ),
                       ),

@@ -30,7 +30,7 @@ class _CallState extends State<Call> {
         userID:
             userid, // userID should only contain numbers, English characters and  '_'
         userName: widget.username,
-        liveID: widget.idlive,
+        roomID: widget.idlive,
         config: widget.isHost
             ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
             : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience(),

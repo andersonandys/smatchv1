@@ -133,9 +133,10 @@ class Requmessage extends GetxController {
   //  Gestion d'envoi en arriere plan de la messagerie
   void launchupload(idmessage) async {
     var nom = namefile.value + idmessage;
+    var path = pathfile.value;
     var datafile = [
       {"nom": nom},
-      {"path": pathfile.value}
+      {"path": path}
     ];
 
     final value = await IsolateFlutter.createAndStart(_sendfunction, datafile);

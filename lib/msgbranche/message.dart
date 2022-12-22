@@ -1813,7 +1813,6 @@ class _MessagebrancheState extends State<Messagebranche> {
       "idmessage": "",
       "finish": false
     }).then((value) {
-      mscontrol.restfast();
       FirebaseFirestore.instance
           .collection('message')
           .doc(value.id)
@@ -1836,6 +1835,7 @@ class _MessagebrancheState extends State<Messagebranche> {
         }
       });
       mscontrol.resettemessage();
+      mscontrol.restfast();
       mscontrol.launchnotification(
         newmessage,
         listfcm,
@@ -1845,6 +1845,7 @@ class _MessagebrancheState extends State<Messagebranche> {
         sendrequ.idnoeuds.value,
       );
     });
+    mscontrol.typemessage.value = "sms";
     setState(() {
       newmessage = messagecontroler.text;
       messagecontroler.text = "";
